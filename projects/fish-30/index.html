@@ -228,7 +228,7 @@ function close(){dialog=false;keys.clear();$('.dialogue').hidden=true;$('.world'
 function complete(){state.done=Math.max(state.done,state.chapter+1);save();update();tone(880);show(npcNames[state.chapter],current().result);toast('獲得徽章：'+current().badge)}
 function interact(){if(dialog){close();return}if(state.chapter===0&&near(streetNPC)){show('街頭混混','看什麼看，有種長大當法官抓我呀！');return}if(state.chapter===2&&near(accountingNPC)){universityTalk('accounting');return}tone(550);if(state.chapter<chapters.length&&near(gate)){if(state.chapter===chapters.length){toast('先去找學長，打開生日驚喜吧。');return}if(!finished()){show('✦ 時光之門','還有值得收藏的回憶。先完成本章任務，再繼續前進吧。');return}state.chapter++;state.collected=[];player={x:5,y:13,px:160,py:416,dir:'down'};save();update();toast(state.chapter===chapters.length?'歡迎來到三十歲的生日花園！':'抵達：'+current().place);return}if(state.chapter===0){const member=family.find(near);if(member){if(member.name==='媽媽')talkNPC();else show(member.name,member.story);return}}if(companionVisible()&&near(dog)){talkCompanion();return}if(near(npc)){talkNPC();return}let c=current();if(state.chapter<chapters.length&&c.type==='collect'){for(let i=0;i<c.items.length;i++){if(near(spots[i])&&!collected().has(i)){state.collected.push(i);save();update();show('✦ 拾起回憶',c.items[i]+' 已放進背包。'+(collected().size===c.items.length?'收集齊了！回去找廣場中央的角色吧。':'還有其他回憶散落在地圖中。'));if(state.chapter===0&&i===1){$('#story').textContent='📺 小時候看電視上關於法官的新聞、報導與節目，讓魚魚萌生了當法官的夢想。這份憧憬，已收進童年回憶。'}if(state.chapter===0&&i===2)offerIceMemory();tone(900);return}}}toast('靠近角色、閃光寶物或金色門，再按 E。')}
 function talkNPC(){if(state.chapter===chapters.length){finale();return}let c=current();if(finished()){show(npcNames[state.chapter],c.result+'\n右側的時光之門，正在等妳。');return}if(c.type==='collect'){if(collected().size>=c.items.length){complete();return}show(npcNames[state.chapter],c.story+(state.chapter===0?'':'\n請在地圖中找到 '+c.items.length+' 個閃光回憶，帶回來給我。'));return}show(npcNames[state.chapter],c.story,c.items.map((text,i)=>({text,run:()=>{if(c.type==='quiz'&&i!==0){show(npcNames[state.chapter],'我們再一起核對看看：收入 100 − 支出 60。別急，再試一次。',[{text:'重新核對',run:talkNPC}]);return}complete()}})))}
-function finale(){show('🐕 學長','親愛的魚魚：\n從中正高中，到政大法律與會計雙主修；從 NTT 的會計工作，到辭職後在家備考一年半，再到考上司法官、打工與入院受訓，每一個版本的妳都值得被愛。\n我為妳的努力感到驕傲。但就算今天什麼任務都沒完成，妳也一樣是我最喜歡的寶貝。\n三十歲，願妳繼續做喜歡的事、走想走的路。接下來的冒險，讓學長陪妳一起。',[{text:'🎂 許願，吹熄蠟燭',run:()=>{show('♡ 生日快樂','願妳平安、快樂，也永遠知道自己被愛著。\n三十歲只是下一場美好冒險的開始。');celebrateBirthday();tone(1046)}}]);$('#story').style.whiteSpace='pre-line'}
+function finale(){show('✦ 守護神・學長','親愛的魚魚：\n從中正高中，到政大法律與會計雙主修；從 NTT 的會計工作，到辭職後在家備考一年半，再到考上司法官、打工與入院受訓，每一個版本的妳都值得被愛。\n我為妳的努力感到驕傲。但就算今天什麼任務都沒完成，妳也一樣是我最喜歡的寶貝。\n三十歲，願妳繼續做喜歡的事、走想走的路。接下來的冒險，讓學長陪妳一起。',[{text:'🎂 許願，吹熄蠟燭',run:()=>{show('♡ 生日快樂','願妳平安、快樂，也永遠知道自己被愛著。\n三十歲只是下一場美好冒險的開始。');celebrateBirthday();tone(1046)}}]);$('#story').style.whiteSpace='pre-line'}
 // Visual building envelopes include roof overhangs in every chapter.
 const buildingBounds=[{left:371,top:92,right:575,bottom:249},{left:53,top:123,right:204,bottom:275},{left:728,top:417,right:901,bottom:540}];
 function blocked(x,y){
@@ -265,7 +265,7 @@ rect(0,0,960,94,n===5||n===9?'#253c49':'#54766e');for(let j=0;j<6;j++){poly([[j*
 if(n===2||n===3)campusArt(t);else if(n===4){hall(381,126,184,123,'NTT · 會計辦公室','modern');rect(393,135,159,85,'#627d8e');for(let f=0;f<4;f++)for(let i=0;i<6;i++)rect(400+i*25,143+f*18,17,11,'#a9cbd3');hall(66,162,127,113,'辦公區','modern');hall(740,458,148,82,'會議空間','modern');desk(657,207)}else if(n===5){hall(381,130,184,117,'一年半的書房');rect(415,174,32,36,'#efd69a');rect(493,174,32,36,'#e6c287');hall(66,162,127,110,'安心補給站');hall(740,458,148,82,'明天，也一起加油');desk(659,218);for(let k=0;k<7;k++)rect(659+k*7,198-(k%3)*3,5,19,['#b9936d','#7c9e94','#ddc98d'][k%3]);rect(781,390,30,39,'#daccaa');text('18 個月',797,418,'#3c5b55',11)}else if(n===7){hall(381,128,184,120,'打工生活小鎮','modern');hall(66,160,127,111,'UNIQLO','modern');rect(78,169,38,30,'#b65958');text('UNIQLO',139,221,'#fff0da',12);hall(741,457,149,82,'inooknit','modern');rect(756,476,119,23,'#8fada0');text('inooknit',816,493,'#fff8df',13);rr(650,173,223,92,'#d9c99d',9);text('BigByte Education',760,201,'#5a6d63',13);for(let i=0;i<4;i++){rect(673+i*43,218,23,27,['#a6bc9d','#8fa8b1','#c7987d','#baa7b8'][i]);text('ABC'[i%3],685+i*43,237,'#fff6dc',12)}}else{hall(381,132,184,116,['星光小屋','童年小屋','','','','','榮耀之門','','司法官學院','生日小屋'][n],n>=6?'modern':'tile');hall(66,163,127,109,n===9?'祝福小屋':'回憶小屋');hall(740,457,148,82,n===9?'未來的小屋':'旅途驛站');if(n===9){for(let i=0;i<9;i++){let x=643+i*24;rect(x,188+(i%2)*8,13,21,['#d2a09a','#dacb99','#a6bfc3'][i%3]);rect(x+6,208+(i%2)*8,1,30,'#d9d2b1')}fountain(740,250,t)}else fountain(721,220,t)}
 for(let o of trees)pine(o.x*32+16,o.y*32+25,.75);for(let i=0;i<19;i++){let x=(i*173+51)%900+25,y=(i*83)%397+175;if(!blocked(Math.floor(x/32),Math.floor(y/32))){rect(x,y,3,9,'#6b8464');rect(x-3,y-2,9,5,i%2?'#d6b0a2':'#e8d29e')}}
 // Campus references are visual adaptations, not a surveyed campus plan.
-if(n===2||n===3)text('實景建築參考 · 遊戲縮排地圖',782,610,'#e5dfc8',11);
+
 }
 function portrait(x,y,color,dir='down',isPlayer=false){let bob=isPlayer?Math.sin(walking*1.7)*1.4:0;ctx.fillStyle='#24453940';ctx.beginPath();ctx.ellipse(x+17,y+30,17,6,0,0,Math.PI*2);ctx.fill();rect(x+9,y+20,7,12+bob,'#4c5051');rect(x+20,y+20,7,12-bob,'#4c5051');rect(x+7,y+29+bob,10,4,'#805c49');rect(x+20,y+29-bob,10,4,'#805c49');poly([[x+10,y+5],[x+25,y+5],[x+31,y+24],[x+3,y+24]],color);rect(x+4,y+10,5,13,'#e7c19f');rect(x+28,y+10,5,13,'#e7c19f');rect(x+7,y-17,24,27,'#4d433e');rect(x+10,y-11,18,20,'#f0cfab');rect(x+8,y-16,23,8,'#5d4c40');rect(x+7,y-10,5,24,'#5d4c40');rect(x+26,y-10,5,24,'#5d4c40');if(dir==='up')rect(x+10,y-10,18,20,'#5d4c40');else{rect(x+13+(dir==='right'?2:0),y-2,2,3,'#4b4940');rect(x+22-(dir==='left'?2:0),y-2,2,3,'#4b4940');rect(x+16,y+5,5,2,'#c28c78');rect(x+11,y+2,3,2,'#e7ad94')}if(isPlayer){rect(x+9,y-17,7,4,'#c18e74');rect(x+11,y+8,15,2,'#fff0d3');rect(x+14,y+11,8,10,'#c6a982')}}
 sprite=portrait;
@@ -281,7 +281,7 @@ draw=function(t=0){
   for(const m of family){sprite(m.x*32,m.y*32,m.color);text(m.name,m.x*32+17,m.y*32-28);if(m.name==='媽媽')text(finished()?'✓':'!',m.x*32+17,m.y*32-55,'#f0d08c',20)}
   sprite(streetNPC.x*32,streetNPC.y*32,'#424b58');text('街頭混混',streetNPC.x*32+16,streetNPC.y*32-28);
  }else{
-  sprite(npc.x*32,npc.y*32,state.chapter===chapters.length?'#96b1b5':'#b3b99d');text(npcNames[state.chapter],npc.x*32+17,npc.y*32-28);text(state.chapter===chapters.length?'♡':finished()?'✓':'!',npc.x*32+17,npc.y*32-55,'#f0d08c',20);
+  if(state.chapter===chapters.length){drawCompanion(t,npc)}else{sprite(npc.x*32,npc.y*32,'#b3b99d');text(npcNames[state.chapter],npc.x*32+17,npc.y*32-28);text(finished()?'✓':'!',npc.x*32+17,npc.y*32-55,'#f0d08c',20);}
   if(state.chapter===2){sprite(accountingNPC.x*32,accountingNPC.y*32,'#8fa6be');text('會計系老師',accountingNPC.x*32+17,accountingNPC.y*32-28)}
   if(companionVisible())drawCompanion(t);
  }
@@ -474,8 +474,8 @@ function drawMemory(i,t){
  text(icons[state.chapter]?.[i]||'✨',x+16,y+23+bob,'#fff5da',22);
  text(memoryLabel(i),x+16,y-12,'#fff0c2',12);
 }
-function drawCompanion(t){
- const x=dog.x*T,y=dog.y*T,hero=state.chapter===3;
+function drawCompanion(t,position=dog){
+ const x=position.x*T,y=position.y*T,hero=true;
  if(hero){
   ctx.fillStyle='#ffe5a02b';ctx.beginPath();ctx.ellipse(x+16,y+8,49,66,0,0,Math.PI*2);ctx.fill();
   poly([[x+9,y+3],[x-29,y-27],[x-20,y+4],[x-7,y+17]],'#f3ead0');poly([[x+25,y+3],[x+63,y-27],[x+54,y+4],[x+41,y+17]],'#f3ead0');
@@ -526,7 +526,7 @@ function talkCompanion(){
    }}
   ]);return;
  }
- show('學長','每天睡到飽，健康讀書最重要。');
+ show('✦ 守護神・學長',state.chapter===5?'我就知道妳一定考得上！林狗狗銀行的眼光可是很準的，早就看好妳這支績優股了。':'每天睡到飽，健康讀書最重要。');
 }
 // Make chapter-specific objectives readable in the status menu.
 const updateBase=update;
