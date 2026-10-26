@@ -49,25 +49,25 @@ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none;backgr
 .status-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:16px}
 .status-tabs .choice{text-align:center;font-size:15px;padding:10px 4px;min-height:48px}
 .status-tabs .choice[aria-pressed="true"]{background:#365f49;color:#fff9e9;border-color:#769367}
-</style><body><div class="mobile-title"><span>魚魚的三十歲冒險</span><button id="mobileMenu" aria-label="開啟冒險手帳">☰</button></div><header><b>✦ FISH’S ADVENTURE</b><div><button id="sound">♫ 音效關</button><button id="restart">重新冒險</button></div></header><main><section class="intro"><small>A LITTLE GAME FOR A VERY SPECIAL PERSON</small><h1>魚魚的三十歲冒險 <em>✧</em></h1><p>每一次勇敢的選擇，都讓妳成為今天閃閃發光的自己。</p><label>BIRTHDAY EDITION　✦　LEVEL 30</label></section><div class="layout"><aside><div class="profile"><div class="avatar">👧🏻</div><div><small>冒險者</small><h2>魚魚</h2><span id="role">小小探索家</span></div></div><div class="stats"><b id="level">LV. 0</b><span id="progressText">0 / 9 章完成</span></div><div class="bar"><div id="progress"></div></div><h3>冒險地圖 <small>THE JOURNEY</small></h3><nav id="chapters"></nav><div class="companion">🐕 <div><b>學長陪伴中</b><p>這趟旅程，隨時都有我。</p></div></div></aside><section class="game"><div class="top"><span id="chapterLabel">PROLOGUE · 冒險的起點</span><span id="location">✦ 星光出生地</span></div><div class="hud"><span>♥ HP <b>100 / 100</b></span><span>✦ EXP <b id="xp">0</b></span><span>🎒 徽章 <b id="bag">0 / 8</b></span></div><div class="quest" id="quest"></div><div class="world" tabindex="0" aria-label="遊戲地圖，方向鍵移動，E 對話，Escape 關閉對話"><canvas id="world" width="960" height="640" aria-label="像素風冒險場景"></canvas><div class="sceneTitle"><small id="age">ONCE UPON A TIME</small><h2 id="sceneName">世界，準備迎接妳。</h2></div><div id="hint">一段專屬於妳的故事，即將開始</div></div><div class="controls"><span>方向鍵 / WASD 移動 · E / 空白鍵 互動 · Esc 關閉</span><button id="talk">💬 對話 / 互動</button></div><div class="dpad"><button data-dir="up" aria-label="向上">▲</button><div><button data-dir="left" aria-label="向左">◀</button><button data-dir="down" aria-label="向下">▼</button><button data-dir="right" aria-label="向右">▶</button></div></div><div class="dialogue" role="dialog" aria-label="角色對話"><div id="speaker">✦ 故事旁白</div><p id="story">從小小的妳，到勇敢追夢的妳。這一次，我們把時間倒轉，一起收集那些讓妳成為妳的瞬間。</p><div id="activity"></div><div class="actions"><span id="taskInfo">自由探索 · 與角色對話推進故事</span><button class="primary" id="next">開始冒險　→</button></div></div></section></div><section class="collection"><div><small>LITTLE THINGS, BIG MEANINGS</small><h2>旅途收藏冊</h2><p>妳走過的每一步，都值得被好好記住。</p></div><div id="badges"></div></section><details style="margin:20px auto;max-width:900px;font-size:11px;line-height:2;color:#71806b"><summary>校園場景參考與改編說明</summary><p>校園建築採俯視角像素改繪，位置與比例為遊戲重新編排，並非實測配置，也不代表主角就學年代的完整原貌。小任務與 NPC 對白為生日遊戲創作，非真實事件紀錄。</p><a href="https://www.ccsh.tp.edu.tw/" target="_blank" rel="noopener">中正高中官方：至聖樓、迎曦樓、格致樓照片</a><br><a href="https://www.ccsh.tp.edu.tw/wp-content/uploads/doc/admin/114-1classroom.pdf" target="_blank" rel="noopener">中正高中官方教室配置圖</a><br><a href="https://www.alumni.nccu.edu.tw/elearning/module/43" target="_blank" rel="noopener">政大官方：引水人山下精華導覽</a><br><a href="https://archive.lib.nccu.edu.tw/p/405-1003-1505%2Cc243.php?Lang=zh-tw" target="_blank" rel="noopener">政大官方：政大十景</a></details><footer>MADE WITH LOVE, FOR YOUR 30TH BIRTHDAY　♡　FROM 學長</footer></main><script>const $=s=>document.querySelector(s);
+</style><body><div class="mobile-title"><span>魚魚的三十歲冒險</span><button id="mobileMenu" aria-label="開啟冒險手帳">☰</button></div><header><b>✦ FISH’S ADVENTURE</b><div><button id="sound">♫ 音效關</button><button id="restart">重新冒險</button></div></header><main><section class="intro"><small>A LITTLE GAME FOR A VERY SPECIAL PERSON</small><h1>魚魚的三十歲冒險 <em>✧</em></h1><p>每一次勇敢的選擇，都讓妳成為今天閃閃發光的自己。</p><label>BIRTHDAY EDITION　✦　LEVEL 30</label></section><div class="layout"><aside><div class="profile"><div class="avatar">👧🏻</div><div><small>冒險者</small><h2>魚魚</h2><span id="role">小小探索家</span></div></div><div class="stats"><b id="level">LV. 0</b><span id="progressText">0 / 9 章完成</span></div><div class="bar"><div id="progress"></div></div><h3>冒險地圖 <small>THE JOURNEY</small></h3><nav id="chapters"></nav><div class="companion">🐕 <div><b>學長陪伴中</b><p>這趟旅程，隨時都有我。</p></div></div></aside><section class="game"><div class="top"><span id="chapterLabel">PROLOGUE · 冒險的起點</span><span id="location">✦ 星光出生地</span></div><div class="hud"><span>♥ HP <b>100 / 100</b></span><span>✦ EXP <b id="xp">0</b></span><span>🎒 徽章 <b id="bag">0 / 8</b></span></div><div class="quest" id="quest"></div><div class="world" tabindex="0" aria-label="遊戲地圖，方向鍵移動，E 對話，Escape 關閉對話"><canvas id="world" width="960" height="640" aria-label="像素風冒險場景"></canvas><div class="sceneTitle"><small id="age">ONCE UPON A TIME</small><h2 id="sceneName">世界，準備迎接妳。</h2></div><div id="hint">一段專屬於妳的故事，即將開始</div></div><div class="controls"><span>方向鍵 / WASD 移動 · E / 空白鍵 互動 · Esc 關閉</span><button id="talk">💬 對話 / 互動</button></div><div class="dpad"><button data-dir="up" aria-label="向上">▲</button><div><button data-dir="left" aria-label="向左">◀</button><button data-dir="down" aria-label="向下">▼</button><button data-dir="right" aria-label="向右">▶</button></div></div><div class="dialogue" role="dialog" aria-label="角色對話"><div id="speaker">✦ 故事旁白</div><p id="story">從小小的妳，到勇敢追夢的妳。這一次，我們把時間倒轉，一起收集那些讓妳成為妳的瞬間。</p><div id="activity"></div><div class="actions"><span id="taskInfo">自由探索 · 與角色對話推進故事</span><button class="primary" id="next">開始冒險　→</button></div></div></section></div><section class="collection"><div><small>LITTLE THINGS, BIG MEANINGS</small><h2>旅途收藏冊</h2><p>妳走過的每一步，都值得被好好記住。</p></div><div id="badges"></div></section><details style="margin:20px auto;max-width:900px;font-size:11px;line-height:2;color:#71806b"><summary>場景參考與改編說明</summary><p>第一章以社子島河岸、堤防、巷弄與家庭代工回憶為意象，非實測地圖；家人對話與包裝任務為遊戲改編，鉛筆圖案不對應特定品牌商品。校園建築採俯視角像素改繪，位置與比例為遊戲重新編排，並非實測配置，也不代表主角就學年代的完整原貌。小任務與 NPC 對白為生日遊戲創作，非真實事件紀錄。</p><a href="https://www.ccsh.tp.edu.tw/" target="_blank" rel="noopener">中正高中官方：至聖樓、迎曦樓、格致樓照片</a><br><a href="https://www.ccsh.tp.edu.tw/wp-content/uploads/doc/admin/114-1classroom.pdf" target="_blank" rel="noopener">中正高中官方教室配置圖</a><br><a href="https://www.alumni.nccu.edu.tw/elearning/module/43" target="_blank" rel="noopener">政大官方：引水人山下精華導覽</a><br><a href="https://archive.lib.nccu.edu.tw/p/405-1003-1505%2Cc243.php?Lang=zh-tw" target="_blank" rel="noopener">政大官方：政大十景</a></details><footer>MADE WITH LOVE, FOR YOUR 30TH BIRTHDAY　♡　FROM 學長</footer></main><script>const $=s=>document.querySelector(s);
 const chapters=[
   {
-    "title": "降落在這個世界",
-    "age": "0 歲 · 故事的起點",
-    "place": "星光出生地",
-    "role": "小小探索家",
-    "icon": "⭐",
-    "badge": "初生星光",
-    "name": "一顆新星，誕生了。",
-    "story": "很久很久以前，一個名叫魚魚的小女孩來到了這個世界。那時候的她還不知道，未來會有好多精彩的冒險，在等著她。",
+    "title": "社子島・家的起點",
+    "age": "降生與童年 · 社子島",
+    "place": "社子島・河岸巷弄",
+    "role": "家裡的小小幫手",
+    "icon": "✏️",
+    "badge": "家的手作記憶",
+    "name": "河風吹來，故事從家開始。",
+    "story": "魚魚的故事，從社子島開始。河岸、堤防與熟悉的巷弄，串起一家人的日常。小時候，在工廠做手工、幫忙整理伴手禮鉛筆的回憶，也藏在這裡。去找爸爸、姊姊和哥哥聊聊，收集三份材料，再帶回來找媽媽一起完成包裝吧。",
     "type": "collect",
     "items": [
-      "第一聲哭聲",
-      "第一個擁抱",
-      "第一個微笑"
+      "✏️ 彩色伴手禮鉛筆",
+      "⭐ 童趣圖案裝飾",
+      "🎁 透明包裝袋"
     ],
-    "hint": "點亮三個最初的回憶",
-    "result": "妳的到來，讓世界多了一份可愛。獲得「初生星光」！"
+    "hint": "收集鉛筆、裝飾與包裝袋，再找媽媽",
+    "result": "一份小小的伴手禮完成了！那些一起動手、彼此陪伴的日常，成為魚魚最初的力量。獲得「家的手作記憶」。"
   },
   {
     "title": "小小世界大探索",
@@ -211,7 +211,7 @@ const chapters=[
   }
 ];
 let state={chapter:0,done:0,collected:[]};try{let s=JSON.parse(localStorage.getItem('fish-rpg-v3'));if(s&&Number.isInteger(s.chapter)&&s.chapter>=0&&s.chapter<=chapters.length&&Number.isInteger(s.done)&&s.done>=0&&s.done<=chapters.length&&Array.isArray(s.collected))state=s}catch{}
-let player={x:5,y:13,px:160,py:416,dir:'down'},keys=new Set(),dialog=false,music=false,audioCtx,last=0,timer=0,walking=0,mode='',npcNames=['星光守護者','童年玩伴','知識老師','雙塔學院導師','會計前輩','書桌前的自己','報喜信使','打工小鎮嚮導','學院導師','學長'],npc={x:14,y:9},dog={x:8,y:13},gate={x:26,y:10},spots=[{x:9,y:6},{x:20,y:13},{x:22,y:6}];
+let player={x:5,y:13,px:160,py:416,dir:'down'},keys=new Set(),dialog=false,music=false,audioCtx,last=0,timer=0,walking=0,mode='',npcNames=['媽媽','童年玩伴','知識老師','雙塔學院導師','會計前輩','書桌前的自己','報喜信使','打工小鎮嚮導','學院導師','學長'],npc={x:14,y:9},dog={x:8,y:13},gate={x:26,y:10},spots=[{x:9,y:6},{x:20,y:13},{x:22,y:6}];
 const canvas=$('#world'),ctx=canvas.getContext('2d'),T=32,W=30,H=20;
 function save(){try{localStorage.setItem('fish-rpg-v3',JSON.stringify(state))}catch{}}
 function tone(f=660){if(!music)return;try{audioCtx??=new(window.AudioContext||window.webkitAudioContext)();audioCtx.resume();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=f;g.gain.setValueAtTime(.04,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.2);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.2)}catch{}}
@@ -221,7 +221,7 @@ function update(){let c=current();$('#chapters').innerHTML=chapters.slice(0,stat
 function show(speaker,text,buttons=[]){dialog=true;keys.clear();$('.dialogue').hidden=false;$('#speaker').textContent=speaker;$('#story').className='';$('#story').textContent=text;$('#activity').innerHTML='';buttons.forEach(b=>{let e=document.createElement('button');e.className='choice';e.textContent=b.text;e.onclick=b.run;$('#activity').append(e)});$('#activity').className=buttons.length?'choices':'';$('#taskInfo').textContent='E / 空白鍵 繼續 · Esc 關閉';$('#next').textContent='返回地圖　↵';$('#next').disabled=false;$('#next').onclick=close}
 function close(){dialog=false;keys.clear();$('.dialogue').hidden=true;$('.world').focus({preventScroll:true})}
 function complete(){state.done=Math.max(state.done,state.chapter+1);save();update();tone(880);show(npcNames[state.chapter],current().result);toast('獲得徽章：'+current().badge)}
-function interact(){if(dialog){close();return}tone(550);if(near(gate)){if(state.chapter===chapters.length){toast('先去找學長，打開生日驚喜吧。');return}if(!finished()){show('✦ 時光之門','還有值得收藏的回憶。先完成本章任務，再繼續前進吧。');return}state.chapter++;state.collected=[];player={x:5,y:13,px:160,py:416,dir:'down'};save();update();toast(state.chapter===chapters.length?'歡迎來到三十歲的生日花園！':'抵達：'+current().place);return}if(near(dog)){show('🐕 學長','不用趕路，也不用每次都選得完美。慢慢探索，我一直都在。');return}if(near(npc)){talkNPC();return}let c=current();if(state.chapter<chapters.length&&c.type==='collect'){for(let i=0;i<c.items.length;i++){if(near(spots[i])&&!collected().has(i)){state.collected.push(i);save();update();show('✦ 拾起回憶',c.items[i]+' 已放進背包。'+(collected().size===c.items.length?'收集齊了！回去找廣場中央的角色吧。':'還有其他回憶散落在地圖中。'));tone(900);return}}}toast('靠近角色、閃光寶物或金色門，再按 E。')}
+function interact(){if(dialog){close();return}tone(550);if(near(gate)){if(state.chapter===chapters.length){toast('先去找學長，打開生日驚喜吧。');return}if(!finished()){show('✦ 時光之門','還有值得收藏的回憶。先完成本章任務，再繼續前進吧。');return}state.chapter++;state.collected=[];player={x:5,y:13,px:160,py:416,dir:'down'};save();update();toast(state.chapter===chapters.length?'歡迎來到三十歲的生日花園！':'抵達：'+current().place);return}if(state.chapter===0){const member=family.find(near);if(member){if(member.name==='媽媽')talkNPC();else show(member.name,member.story);return}}if(state.chapter!==0&&near(dog)){show('🐕 學長','不用趕路，也不用每次都選得完美。慢慢探索，我一直都在。');return}if(near(npc)){talkNPC();return}let c=current();if(state.chapter<chapters.length&&c.type==='collect'){for(let i=0;i<c.items.length;i++){if(near(spots[i])&&!collected().has(i)){state.collected.push(i);save();update();show('✦ 拾起回憶',c.items[i]+' 已放進背包。'+(collected().size===c.items.length?'收集齊了！回去找廣場中央的角色吧。':'還有其他回憶散落在地圖中。'));tone(900);return}}}toast('靠近角色、閃光寶物或金色門，再按 E。')}
 function talkNPC(){if(state.chapter===chapters.length){finale();return}let c=current();if(finished()){show(npcNames[state.chapter],c.result+'\n右側的時光之門，正在等妳。');return}if(c.type==='collect'){if(collected().size>=c.items.length){complete();return}show(npcNames[state.chapter],c.story+'\n請在地圖中找到 '+c.items.length+' 個閃光回憶，帶回來給我。');return}show(npcNames[state.chapter],c.story,c.items.map((text,i)=>({text,run:()=>{if(c.type==='quiz'&&i!==0){show(npcNames[state.chapter],'我們再一起核對看看：收入 100 − 支出 60。別急，再試一次。',[{text:'重新核對',run:talkNPC}]);return}complete()}})))}
 function finale(){show('🐕 學長','親愛的魚魚：\n從中正高中，到政大法律與會計雙主修；從 NTT 的會計工作，到辭職後在家備考一年半，再到考上司法官、打工與入院受訓，每一個版本的妳都值得被愛。\n我為妳的努力感到驕傲。但就算今天什麼任務都沒完成，妳也一樣是我最喜歡的寶貝。\n三十歲，願妳繼續做喜歡的事、走想走的路。接下來的冒險，讓學長陪妳一起。',[{text:'🎂 許願，吹熄蠟燭',run:()=>{show('♡ 生日快樂','願妳平安、快樂，也永遠知道自己被愛著。\n三十歲只是下一場美好冒險的開始。');confetti();tone(1046)}}]);$('#story').style.whiteSpace='pre-line'}
 // Visual building envelopes include roof overhangs in every chapter.
@@ -230,7 +230,7 @@ function blocked(x,y){
  if(x<1||x>=29||y<4||y>=19)return true;
  const feet={left:x*T+6,right:x*T+28,top:y*T+18,bottom:y*T+33};
  if(buildingBounds.some(b=>feet.left<b.right&&feet.right>b.left&&feet.top<b.bottom&&feet.bottom>b.top))return true;
- if(x===npc.x&&y===npc.y||x===dog.x&&y===dog.y)return true;
+ if(state.chapter===0){if(family.some(o=>o.x===x&&o.y===y))return true;if(x>=19&&x<=21&&y===11)return true;}else if(x===npc.x&&y===npc.y||x===dog.x&&y===dog.y)return true;
  return trees.some(t=>t.x===x&&t.y===y);
 }
 function move(dx,dy){player.dir=dx<0?'left':dx>0?'right':dy<0?'up':'down';if(!blocked(player.x+dx,player.y+dy)){player.x+=dx;player.y+=dy;walking++;return true}return false}
@@ -252,7 +252,7 @@ function pine(x,y,s=1){rect(x-5*s,y-10*s,10*s,30*s,'#76654d');poly([[x-30*s,y-4*
 function fountain(x,y,t){ctx.fillStyle='#d8d3bb';ctx.beginPath();ctx.ellipse(x,y,49,25,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#83b2b1';ctx.beginPath();ctx.ellipse(x,y-3,41,18,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#d2eeea';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(x,y-3,23+Math.sin(t/450)*5,9,0,0,Math.PI*2);ctx.stroke();rect(x-6,y-30,12,25,'#cfdbc9');ctx.strokeStyle='#d2efdf';for(let a=-1;a<=1;a++){ctx.beginPath();ctx.moveTo(x,y-33);ctx.quadraticCurveTo(x+a*30,y-55,x+a*25,y-9);ctx.stroke()}}
 function campusArt(t){if(state.chapter===2){hall(381,127,182,121,'至聖樓','modern');hall(66,160,128,108,'格致樓','modern');hall(741,457,151,81,'迎曦樓','modern');for(let x=391;x<560;x+=14)rect(x,131,3,115,'#ece4d2');rect(63,247,134,5,'#ab927e');for(let i=0;i<4;i++){rect(757+i*32,462,7,70,'#dfe4d7')}rr(650,178,225,96,'#a96654',44);rr(661,187,203,77,'#b97760',35);rr(673,196,179,58,'#96a17a',25);ctx.strokeStyle='#e4c7ad';ctx.lineWidth=2;for(let j=0;j<3;j++){ctx.beginPath();ctx.roundRect(655+j*5,182+j*5,215-j*10,86-j*10,40);ctx.stroke()}text('操場',760,241,'#f9edcf',12);rect(40,409,28,72,'#e0ddcd');rect(39,402,30,11,'#5d896c');rect(86,423,100,35,'#d4ac81');for(let i=0;i<10;i++)rect(88+i*10,425,3,30,'#966e58');text('臺北市立中正高級中學',169,494,'#fff1d8',15)}else{hall(382,135,182,114,'四維堂','modern');rect(408,137,130,15,'#c3c6ba');for(let i=0;i<5;i++)rect(400+i*31,165,10,59,'#e3e2ce');hall(63,167,128,105,'果夫樓');hall(738,456,152,83,'志希樓');fountain(684,221,t);text('國立政治大學 NCCU',248,490,'#fff2d2',16);rect(35,417,27,67,'#b9b8a4');rect(186,417,27,67,'#b9b8a4');rect(32,412,33,8,'#506d60');rect(183,412,33,8,'#506d60');text('校門意象',123,445,'#e3d9b7',11)}}
 function desk(x,y){rect(x+5,y+17,8,20,'#78664e');rect(x+67,y+17,8,20,'#78664e');rect(x,y,80,22,'#c4a579');rect(x,y,80,4,'#e2c79b');rect(x+27,y-23,30,23,'#53606a');rect(x+30,y-20,24,17,'#a6ced2');rect(x+34,y+6,25,5,'#eee4c7');rect(x+8,y-5,11,7,'#f1debc')}
-function sceneArt(t){let n=state.chapter,p=scenery[n];rect(0,0,960,640,p[0]);for(let y=0;y<20;y++)for(let x=0;x<30;x++){let h=(x*73+y*37)%17;if(h<3){rect(x*32+7,y*32+19,7,2,'#c4d0a126');rect(x*32+10,y*32+16,2,5,'#c4d0a133')}}
+function sceneArt(t){if(state.chapter===0){sheziArt(t);return}let n=state.chapter,p=scenery[n];rect(0,0,960,640,p[0]);for(let y=0;y<20;y++)for(let x=0;x<30;x++){let h=(x*73+y*37)%17;if(h<3){rect(x*32+7,y*32+19,7,2,'#c4d0a126');rect(x*32+10,y*32+16,2,5,'#c4d0a133')}}
 // Path tiles use the same collision grid as movement.
 for(let y=4;y<19;y++)for(let x=1;x<29;x++){if((y>=9&&y<=11)||(x>=13&&x<=15)||(y>=12&&y<=14&&x<14)){rect(x*32,y*32,32,32,p[1]);rect(x*32,y*32,31,1,'#f3edda32');rect(x*32,y*32,1,31,'#3d514d18');if((x+y)%4===0)rect(x*32+8,y*32+8,5,2,'#938d7c30')}}
 rect(0,0,960,94,n===5||n===9?'#253c49':'#54766e');for(let j=0;j<6;j++){poly([[j*200-70,94],[j*200+50,17+(j%3)*13],[j*200+210,94]],n===5||n===9?'#3c595a':'#64867a')}for(let i=0;i<8;i++){rect(i*150+20,30+(i%2)*17,72,7,'#d2d7b22b');rect(i*150+40,24+(i%2)*17,36,7,'#d2d7b22b')}for(let y=4;y<19;y++){pine(12,y*32+15,.46);pine(946,y*32+15,.46)}
@@ -263,10 +263,48 @@ if(n===2||n===3)text('實景建築參考 · 遊戲縮排地圖',782,610,'#e5dfc8
 }
 function portrait(x,y,color,dir='down',isPlayer=false){let bob=isPlayer?Math.sin(walking*1.7)*1.4:0;ctx.fillStyle='#24453940';ctx.beginPath();ctx.ellipse(x+17,y+30,17,6,0,0,Math.PI*2);ctx.fill();rect(x+9,y+20,7,12+bob,'#4c5051');rect(x+20,y+20,7,12-bob,'#4c5051');rect(x+7,y+29+bob,10,4,'#805c49');rect(x+20,y+29-bob,10,4,'#805c49');poly([[x+10,y+5],[x+25,y+5],[x+31,y+24],[x+3,y+24]],color);rect(x+4,y+10,5,13,'#e7c19f');rect(x+28,y+10,5,13,'#e7c19f');rect(x+7,y-17,24,27,'#4d433e');rect(x+10,y-11,18,20,'#f0cfab');rect(x+8,y-16,23,8,'#5d4c40');rect(x+7,y-10,5,24,'#5d4c40');rect(x+26,y-10,5,24,'#5d4c40');if(dir==='up')rect(x+10,y-10,18,20,'#5d4c40');else{rect(x+13+(dir==='right'?2:0),y-2,2,3,'#4b4940');rect(x+22-(dir==='left'?2:0),y-2,2,3,'#4b4940');rect(x+16,y+5,5,2,'#c28c78');rect(x+11,y+2,3,2,'#e7ad94')}if(isPlayer){rect(x+9,y-17,7,4,'#c18e74');rect(x+11,y+8,15,2,'#fff0d3');rect(x+14,y+11,8,10,'#c6a982')}}
 sprite=portrait;
-draw=function(t=0){sceneArt(t);let c=current();if(state.chapter<chapters.length&&c.type==='collect')c.items.forEach((item,i)=>{if(!collected().has(i)){let o=spots[i];rect(o.x*32+3,o.y*32+13,28,18,'#7f654b');rect(o.x*32+2,o.y*32+8,30,9,'#c69b5b');rect(o.x*32+5,o.y*32+10,24,3,'#efd192');rect(o.x*32+14,o.y*32+14,5,8,'#e9d29b');text(state.chapter===7?['UNIQLO','inooknit','BigByte'][i]:'✦ 回憶',o.x*32+17,o.y*32-8+Math.sin(t/400)*2,'#f7dfa2',12)}});let open=finished()||state.chapter===chapters.length;rect(gate.x*32-2,gate.y*32-30,36,65,'#919780');rect(gate.x*32+4,gate.y*32-27,24,60,open?'#b4c5aa':'#557467');if(open){rect(gate.x*32+10,gate.y*32-23,12,54,'#e7cd8e');for(let j=0;j<5;j++)rect(gate.x*32+7+j*5,gate.y*32-15+Math.sin(t/300+j)*9,2,3,'#fff0ba')}text('下一段旅程',gate.x*32+16,gate.y*32-42,'#f7e4af',12);sprite(npc.x*32,npc.y*32,state.chapter===9?'#96b1b5':'#b3b99d');text(npcNames[state.chapter],npc.x*32+17,npc.y*32-28);text(state.chapter===9?'♡':finished()?'✓':'!',npc.x*32+17,npc.y*32-55,'#f0d08c',20);rect(dog.x*32+2,dog.y*32+14,25,14,'#c3a270');rect(dog.x*32+23,dog.y*32+7,12,16,'#e0c599');rect(dog.x*32+24,dog.y*32+4,5,10,'#8c6b4c');rect(dog.x*32+31,dog.y*32+12,3,3,'#3c4b3a');text('學長的陪伴',dog.x*32+16,dog.y*32-9,'#f3e4b8',11);sprite(player.px,player.py,'#e8d5aa',player.dir,true);text('魚魚',player.px+17,player.py-29,'#fff2d0',12);let target=near(npc)?npcNames[state.chapter]:near(dog)?'學長':near(gate)?'時光之門':null;if(!target&&state.chapter<chapters.length&&c.type==='collect')c.items.forEach((s,i)=>{if(!collected().has(i)&&near(spots[i]))target=s});$('#hint').textContent=target?'[ E / 空白鍵 ] '+target:'自由探索 · 靠近角色或寶物，按 E 互動';let vign=ctx.createRadialGradient(480,300,180,480,300,620);vign.addColorStop(0,'#163c3300');vign.addColorStop(1,'#163c333f');ctx.fillStyle=vign;ctx.fillRect(0,0,960,640)};
+draw=function(t=0){sceneArt(t);let c=current();if(state.chapter<chapters.length&&c.type==='collect')c.items.forEach((item,i)=>{if(!collected().has(i)){let o=spots[i];rect(o.x*32+3,o.y*32+13,28,18,'#7f654b');rect(o.x*32+2,o.y*32+8,30,9,'#c69b5b');rect(o.x*32+5,o.y*32+10,24,3,'#efd192');rect(o.x*32+14,o.y*32+14,5,8,'#e9d29b');text(state.chapter===0?['彩色鉛筆','童趣裝飾','包裝袋'][i]:state.chapter===7?['UNIQLO','inooknit','BigByte'][i]:'✦ 回憶',o.x*32+17,o.y*32-8+Math.sin(t/400)*2,'#f7dfa2',12)}});let open=finished()||state.chapter===chapters.length;rect(gate.x*32-2,gate.y*32-30,36,65,'#919780');rect(gate.x*32+4,gate.y*32-27,24,60,open?'#b4c5aa':'#557467');if(open){rect(gate.x*32+10,gate.y*32-23,12,54,'#e7cd8e');for(let j=0;j<5;j++)rect(gate.x*32+7+j*5,gate.y*32-15+Math.sin(t/300+j)*9,2,3,'#fff0ba')}text('下一段旅程',gate.x*32+16,gate.y*32-42,'#f7e4af',12);if(state.chapter===0){for(const m of family){sprite(m.x*32,m.y*32,m.color);text(m.name,m.x*32+17,m.y*32-28);if(m.name==='媽媽')text(finished()?'✓':'!',m.x*32+17,m.y*32-55,'#f0d08c',20)}}else{sprite(npc.x*32,npc.y*32,state.chapter===9?'#96b1b5':'#b3b99d');text(npcNames[state.chapter],npc.x*32+17,npc.y*32-28);text(state.chapter===9?'♡':finished()?'✓':'!',npc.x*32+17,npc.y*32-55,'#f0d08c',20);rect(dog.x*32+2,dog.y*32+14,25,14,'#c3a270');rect(dog.x*32+23,dog.y*32+7,12,16,'#e0c599');rect(dog.x*32+24,dog.y*32+4,5,10,'#8c6b4c');rect(dog.x*32+31,dog.y*32+12,3,3,'#3c4b3a');text('學長的陪伴',dog.x*32+16,dog.y*32-9,'#f3e4b8',11);}sprite(player.px,player.py,'#e8d5aa',player.dir,true);text('魚魚',player.px+17,player.py-29,'#fff2d0',12);let target=state.chapter===0?(family.find(near)?.name||(near(gate)?'時光之門':null)):(near(npc)?npcNames[state.chapter]:near(dog)?'學長':near(gate)?'時光之門':null);if(!target&&state.chapter<chapters.length&&c.type==='collect')c.items.forEach((s,i)=>{if(!collected().has(i)&&near(spots[i]))target=s});$('#hint').textContent=target?'[ E / 空白鍵 ] '+target:'自由探索 · 靠近角色或寶物，按 E 互動';let vign=ctx.createRadialGradient(480,300,180,480,300,620);vign.addColorStop(0,'#163c3300');vign.addColorStop(1,'#163c333f');ctx.fillStyle=vign;ctx.fillRect(0,0,960,640)};
+// Shezi Island-inspired scene: river confluence, levee, lanes and home workshop.
+// A condensed memory map, not a geographic reconstruction or branded product replica.
+const family=[
+ {name:'媽媽',x:14,y:9,color:'#cf9f98'},
+ {name:'爸爸',x:11,y:12,color:'#7795a1',story:'這裡是社子島，是我們的家。工廠裡一份一份的手工，也裝著一家人的日常。桌邊的鉛筆先整理好，不用急，慢慢來。'},
+ {name:'姊姊',x:18,y:10,color:'#b8a0c2',story:'魚魚，這些童趣的小裝飾好可愛！一起把顏色分好，再搭配鉛筆吧。做完了，我們再一起去巷子裡走走。'},
+ {name:'哥哥',x:23,y:11,color:'#9eb284',story:'包裝袋在那邊，我幫妳一起數。鉛筆、裝飾、袋子都找齊，就可以回去找媽媽了！'}
+];
+function sheziArt(t){
+ rect(0,0,960,640,'#a8b99a');
+ // Rivers meet beyond the levee; water stays outside the walkable grid.
+ rect(0,0,960,110,'#739fa5');rect(0,110,30,530,'#739fa5');rect(930,110,30,530,'#739fa5');
+ for(let i=0;i<38;i++){let x=(i*83+t/90)%960,y=12+(i*19)%85;rect(x,y,24,2,'#c0d9ce88')}
+ poly([[0,64],[110,36],[236,52],[358,24],[510,48],[665,18],[820,45],[960,26],[960,0],[0,0]],'#819c89');
+ rect(30,110,900,18,'#b9b8a2');rect(30,124,900,6,'#7f9380');
+ for(let x=40;x<930;x+=42){rect(x,99,4,24,'#e0dcc5');rect(x,104,42,3,'#e0dcc5')}
+ text('淡水河 × 基隆河・河岸意象',480,59,'#f6efd5',15);
+ // Concrete lanes link the home, workshop and packing room.
+ for(let y=4;y<19;y++)for(let x=1;x<29;x++){
+ if((y>=9&&y<=13)||(x>=8&&x<=10)||(x>=13&&x<=15)||(x>=20&&x<=22)){
+ rect(x*32,y*32,32,32,'#c8c3ab');rect(x*32,y*32,31,1,'#e6dfc955');
+ }}
+ hall(66,163,127,109,'河岸的家');
+ hall(381,132,184,116,'家庭代工・手作工廠','modern');
+ // Corrugated factory roof within the shared collision envelope.
+ rect(371,111,204,25,'#728e8b');for(let x=375;x<575;x+=10)rect(x,112,3,23,'#a2b0a1');
+ rect(390,171,164,70,'#676f63');for(let y=175;y<236;y+=8)rect(392,y,160,2,'#919889');
+ hall(740,458,148,82,'伴手禮包裝間');
+ // A workbench and small batches of decorated pencils.
+ rect(608,370,96,30,'#a4815e');rect(608,365,96,9,'#d1b082');
+ for(let i=0;i<9;i++){let x=614+i*9;rect(x,351,4,20,['#cf8d80','#d8c47d','#8baeb2'][i%3]);rect(x,348,4,3,'#ead9b4')}
+ text('鉛筆手作桌',656,341,'#fff0ca',13);
+ for(const [x,y] of [[83,285],[121,285],[773,552],[817,552]]){rect(x,y,24,19,'#b5966d');rect(x+11,y,3,19,'#dcc9a3')}
+ // Riverbank grasses, kitchen gardens and potted plants.
+ for(let i=0;i<22;i++){let x=38+i*40;rect(x,575,23,27,'#b29d76');for(let j=0;j<3;j++){rect(x+3+j*7,580,4,15,'#668761');rect(x+2+j*7,577,6,5,'#8da576')}}
+ for(const o of trees)pine(o.x*32+16,o.y*32+25,.75);
+ text('社子島・家的巷弄',470,594,'#f9f0d2',14);
+}
 const encounterProgress={};
 const encounters={
-0:{intro:'星光守護者遞來三張記憶卡。請依照成長的順序，替故事排好開場。',questions:[['先有哪一個最初的瞬間？',['來到這個世界','成為司法官','大學畢業'],0],['接著，誰把愛帶進了這個小小世界？',['最初的擁抱與陪伴','會計帳本','考試通知單'],0]]},
+0:{intro:'媽媽把材料放到桌上：一起把這份童趣鉛筆伴手禮整理好吧。（包裝步驟是依童年回憶改編的遊戲。）',questions:[['開始包裝前，先做什麼？',['整理鉛筆、裝飾與包裝袋','把材料全部混在一起'],0],['裝好一份伴手禮，最後一起確認？',['數量齊全、包裝整齊','不用看就收進箱子'],0]]},
 2:{intro:'中正高中放學了！請幫魚魚完成一張校園巡禮卡。（這是遊戲小任務，不代表她的真實校園事件。）',questions:[['準備找一本書，先去哪裡？',['操場','圖書館','校門'],1],['今天的難題還沒想通，妳想怎麼做？',['把疑問寫下，找老師討論','把自己所有努力都否定','永遠不再看課本'],0]]},
 3:{intro:'雙主修的學期任務開始！把兩個領域的工具，放回正確的任務欄。',questions:[['「理解規範、分析權利義務」交給哪一欄？',['會計','法律'],1],['「核對帳目、閱讀財務數字」交給哪一欄？',['會計','法律'],0],['兩邊的任務都很多，如何安排比較好？',['全留到最後一天','分配讀書時段，保留休息空間'],1]]},
 4:{intro:'NTT 的今日小任務：核對兩筆模擬帳目。這些是為遊戲設計的練習，與真實工作資料無關。',questions:[['收入 100，支出 60，餘額是多少？',['40','60','160'],0],['帳本寫支出 70，憑證卻是 60。接下來呢？',['直接忽略','先核對憑證與紀錄，再更正','任意加一筆收入'],1],['核對完成，如何留下清楚的工作紀錄？',['記下依據與調整原因','只憑記憶','把資料打亂'],0]]},
