@@ -205,6 +205,8 @@ try{
  if(saved&&Number.isInteger(saved.chapter)&&saved.chapter>=0&&saved.chapter<=limit&&Number.isInteger(saved.done)&&saved.done>=0&&saved.done<=limit&&Array.isArray(saved.collected)){
   state={chapter:saved.chapter,done:saved.done,collected:saved.collected};
   if(Array.isArray(saved.universityPassed))state.universityPassed=[...new Set(saved.universityPassed.filter(v=>v==='law'||v==='accounting'))];
+  for(const key of ['money','happiness'])if(Number.isSafeInteger(saved[key])&&saved[key]>=0)state[key]=saved[key];
+  for(const key of ['metCompanion','wishCompleted'])state[key]=saved[key]===true;
   if(Number.isInteger(saved.nttStage)&&saved.nttStage>=0&&saved.nttStage<=3)state.nttStage=saved.nttStage;
   if(saved.version!==4){
    if(state.chapter===1)state.collected=[];
@@ -228,7 +230,7 @@ function close(){dialog=false;keys.clear();$('.dialogue').hidden=true;$('.world'
 function complete(){state.done=Math.max(state.done,state.chapter+1);save();update();tone(880);show(npcNames[state.chapter],current().result);toast('獲得徽章：'+current().badge)}
 function interact(){if(dialog){close();return}if(state.chapter===0&&near(streetNPC)){show('街頭混混','看什麼看，有種長大當法官抓我呀！');return}if(state.chapter===2&&near(accountingNPC)){universityTalk('accounting');return}tone(550);if(state.chapter<chapters.length&&near(gate)){if(state.chapter===chapters.length){toast('先去找學長，打開生日驚喜吧。');return}if(!finished()){show('✦ 時光之門','還有值得收藏的回憶。先完成本章任務，再繼續前進吧。');return}state.chapter++;state.collected=[];player={x:5,y:13,px:160,py:416,dir:'down'};save();update();toast(state.chapter===chapters.length?'歡迎來到三十歲的生日花園！':'抵達：'+current().place);return}if(state.chapter===0){const member=family.find(near);if(member){if(member.name==='媽媽')talkNPC();else show(member.name,member.story);return}}if(companionVisible()&&near(dog)){talkCompanion();return}if(near(npc)){talkNPC();return}let c=current();if(state.chapter<chapters.length&&c.type==='collect'){for(let i=0;i<c.items.length;i++){if(near(spots[i])&&!collected().has(i)){state.collected.push(i);save();update();show('✦ 拾起回憶',c.items[i]+' 已放進背包。'+(collected().size===c.items.length?'收集齊了！回去找廣場中央的角色吧。':'還有其他回憶散落在地圖中。'));if(state.chapter===0&&i===1){$('#story').textContent='📺 小時候看電視上關於法官的新聞、報導與節目，讓魚魚萌生了當法官的夢想。這份憧憬，已收進童年回憶。'}if(state.chapter===0&&i===2)offerIceMemory();tone(900);return}}}toast('靠近角色、閃光寶物或金色門，再按 E。')}
 function talkNPC(){if(state.chapter===chapters.length){finale();return}let c=current();if(finished()){show(npcNames[state.chapter],c.result+'\n右側的時光之門，正在等妳。');return}if(c.type==='collect'){if(collected().size>=c.items.length){complete();return}show(npcNames[state.chapter],c.story+(state.chapter===0?'':'\n請在地圖中找到 '+c.items.length+' 個閃光回憶，帶回來給我。'));return}show(npcNames[state.chapter],c.story,c.items.map((text,i)=>({text,run:()=>{if(c.type==='quiz'&&i!==0){show(npcNames[state.chapter],'我們再一起核對看看：收入 100 − 支出 60。別急，再試一次。',[{text:'重新核對',run:talkNPC}]);return}complete()}})))}
-function finale(){show('✦ 守護神・學長','親愛的魚魚：\n從中正高中，到政大法律與會計雙主修；從 NTT 的會計工作，到辭職後在家備考一年半，再到考上司法官、打工與入院受訓，每一個版本的妳都值得被愛。\n我為妳的努力感到驕傲。但就算今天什麼任務都沒完成，妳也一樣是我最喜歡的寶貝。\n三十歲，願妳繼續做喜歡的事、走想走的路。接下來的冒險，讓學長陪妳一起。',[{text:'🎂 許願，吹熄蠟燭',run:()=>{show('♡ 生日快樂','願妳平安、快樂，也永遠知道自己被愛著。\n三十歲只是下一場美好冒險的開始。');celebrateBirthday();tone(1046)}}]);$('#story').style.whiteSpace='pre-line'}
+function finale(){meetCompanion();const buttons=[{text:'🎂 許願，吹熄蠟燭',run:()=>{show('♡ 生日快樂','願妳平安、快樂，也永遠知道自己被愛著。\n三十歲只是下一場美好冒險的開始。');celebrateBirthday();tone(1046)}}];if(state.wishCompleted)buttons.push({text:'其他',run:companionExtras});show('✦ 守護神・學長','親愛的魚魚：\n從中正高中，到政大法律與會計雙主修；從 NTT 的會計工作，到辭職後在家備考一年半，再到考上司法官、打工與入院受訓，每一個版本的妳都值得被愛。\n我為妳的努力感到驕傲。但就算今天什麼任務都沒完成，妳也一樣是我最喜歡的寶貝。\n三十歲，願妳繼續做喜歡的事、走想走的路。接下來的冒險，讓學長陪妳一起。',buttons);$('#story').style.whiteSpace='pre-line'}
 // Visual building envelopes include roof overhangs in every chapter.
 const buildingBounds=[{left:371,top:92,right:575,bottom:249},{left:53,top:123,right:204,bottom:275},{left:728,top:417,right:901,bottom:540}];
 function blocked(x,y){
@@ -368,7 +370,7 @@ function encounter(index=0){let ch=state.chapter,e=encounters[sceneChapter()];if
 const originalTalkNPC=talkNPC;talkNPC=function(){if(state.chapter===2){universityTalk('law');return}if(state.chapter===3){talkSupervisor();return}let c=current();if(state.chapter<chapters.length&&!finished()&&encounters[sceneChapter()]&&(c.type!=='collect'||collected().size>=c.items.length)){encounter();return}originalTalkNPC()};
 // Keep progress details in the status menu instead of covering the map.
 function confirmRestart(){
- show('重新開始冒險？','這會清除目前的章節、經驗、徽章與收集進度，從社子島的第一章重新開始。此操作無法復原。',[
+ show('重新開始冒險？','這會清除目前的章節、經驗、徽章、金錢、幸福度、許願紀錄與收集進度，從社子島的第一章重新開始。此操作無法復原。',[
   {text:'取消，保留進度',run:()=>openStatus()},
   {text:'確定清除進度並重新開始',run:()=>{
    try{localStorage.removeItem('fish-rpg-v3')}catch{
@@ -387,7 +389,7 @@ function openStatus(section='status'){
  update();
  const earned=chapters.slice(0,state.done);
  const screens={
-  status:{title:'冒險狀態',body:`魚魚 · ${$('#role').textContent}\n\n♥ HP 100 / 100\n✦ 等級 ${Math.round(state.done/chapters.length*30)} · 經驗 ${state.done*100}\n🎒 徽章 ${state.done} / ${chapters.length}${state.done>0?'\n✦ 已獲稱號：'+chapters.slice(0,state.done).map(c=>c.awardedTitle||c.badge).join('、'):''}\n\n目前位置：${$('#location').textContent.replace('✦ ','')}`},
+  status:{title:'冒險狀態',body:`魚魚 · ${$('#role').textContent}\n\n♥ HP 100 / 100\n💰 金錢 ${(state.money||0).toLocaleString('zh-TW')} 元\n♡ 幸福度 ${(state.happiness??50).toLocaleString('zh-TW')}${state.metCompanion?' · 幸福爆表！':''}\n✦ 等級 ${Math.round(state.done/chapters.length*30)} · 經驗 ${state.done*100}\n🎒 徽章 ${state.done} / ${chapters.length}${state.done>0?'\n✦ 已獲稱號：'+chapters.slice(0,state.done).map(c=>c.awardedTitle||c.badge).join('、'):''}\n\n目前位置：${$('#location').textContent.replace('✦ ','')}`},
   quest:{title:'目前任務',body:$('#quest').textContent.replaceAll('按 E','按「互動」')},
   badges:{title:'獲得的徽章',body:earned.length?earned.map(c=>`${c.icon} ${c.badge}`).join('\n\n'):'還沒有獲得徽章。完成目前的冒險，就能收藏第一枚紀念。'},
   journal:{title:'冒險手帳',body:chapters.slice(0,state.chapter+1).map((c,i)=>(i<state.done?'✓ ':'➤ ')+c.title+'\n'+c.age).join('\n\n')}
@@ -518,7 +520,30 @@ function talkSupervisor(){
  if(stage===1){show('機車主管','還在想考試的事？妳再想清楚吧。');return}
  show('機車主管','怎麼，又有什麼事？',[{text:'魚魚：老子不幹了，要去備考了！',run:()=>{state.nttStage=3;save();complete()}}]);
 }
+function meetCompanion(){
+ if(state.metCompanion)return;
+ state.metCompanion=true;state.happiness=(state.happiness??50)+9949;save();
+}
+function companionLoan(received=false){
+ show('✦ 林狗狗銀行・學長',(received?'5,000 元已入帳！目前金錢：'+(state.money||0).toLocaleString('zh-TW')+' 元。\n\n':'')+'需要申請林狗狗銀行紓困貸款嗎？有需要就來找我。',[
+  {text:'申請',run:()=>{state.money=(state.money||0)+5000;save();companionLoan(true)}},
+  {text:'再說',run:close}
+ ]);
+}
+function companionExtras(){
+ if(!state.wishCompleted)return;
+ const answer=text=>show('✦ 守護神・學長',text,[{text:'繼續聊聊',run:companionExtras},{text:'回到生日祝福',run:finale}]);
+ show('✦ 守護神・學長','還想聊什麼？我陪妳。',[
+  {text:'學長喜歡什麼？',run:()=>answer('最喜歡魚魚開開心心，做自己喜歡的事。盡力就好，開心讀書最重要！')},
+  {text:'學長討厭什麼？',run:()=>answer('不喜歡看妳被那些「妳做不到」的話打擊。結果如何，我都會陪著妳。')},
+  {text:'回到生日祝福',run:finale}
+ ]);
+}
 function talkCompanion(){
+ meetCompanion();
+ if(state.chapter===6){companionLoan();return}
+ if(state.chapter===7){show('✦ 守護神・學長','盡力就好，開心讀書最重要！累了就休息，照顧好自己，我會一直陪著妳。');return}
+
  if(state.chapter===3){
   show('✦ 守護神・學長','神聖守護者・學長登場！\n陪伴力 MAX、信任值 MAX，專長是替魚魚擋下懷疑，補滿勇氣。\n「不管結果如何，我都會陪著妳。」',[
    {text:(state.nttStage||0)===1?'收下支持，回去向主管辭職':'謝謝學長',run:()=>{
@@ -540,7 +565,7 @@ function celebrateBirthday(){
  keys.clear();releaseJoy();
  const overlay=document.createElement('dialog');overlay.id='birthdayCelebration';overlay.setAttribute('aria-labelledby','birthdayTitle');
  overlay.innerHTML='<div class="birthday-sparkles" aria-hidden="true"></div><div class="birthday-card"><p class="birthday-kicker">A NEW CHAPTER BEGINS</p><div class="birthday-number" aria-hidden="true">30</div><h2 id="birthdayTitle">30歲生日快樂！</h2><p>魚魚，願妳的每一個明天<br>都有喜歡的事、想去的地方，和滿滿的愛。</p><div class="birthday-cake" aria-hidden="true">🎂 ✨ 🎁</div><button class="primary" id="birthdayClose">收下祝福 ♡</button></div>';
- document.body.append(overlay);overlay.showModal();
+ document.body.append(overlay);overlay.showModal();state.wishCompleted=true;save();
  const timeouts=[];const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
  function burst(){
   if(!overlay.isConnected)return;
