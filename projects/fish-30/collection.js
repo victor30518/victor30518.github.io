@@ -38,7 +38,7 @@ openStatus=function(section='status'){
   area.append(panelButton('♫ 音樂與音效',audioSettings),panelButton('重新開始冒險',confirmRestart,'choice restart-adventure'));
  }else if(section==='quest'){
   area.append(panelElement('h2','panel-heading',state.chapter===chapters.length?'生日慶典':current().title),panelElement('p','quest-card',$('#quest').textContent.replaceAll('按 E','按「互動」')));
-  if(state.chapter<chapters.length)area.append(panelElement('p','panel-note',state.chapter===4||state.chapter===5?'這一站沒有標準答案。選一句現在最想送給自己的話，慢慢聊就好。':'挑戰採情境題與知識題；答錯可看提示再試，離開對話後可重新挑戰。'));
+  if(state.chapter<chapters.length)area.append(panelElement('p','panel-note',state.chapter===3?'依照任務提示，和故事中的人物聊聊，慢慢做出自己的決定。':state.chapter===4||state.chapter===5?'這一站沒有標準答案。選一句現在最想送給自己的話，慢慢聊就好。':'挑戰採情境題與知識題；答錯可看提示再試，離開對話後可重新挑戰。'));
  }else{
   area.append(panelElement('h2','panel-heading','那些走過的日子'),panelElement('p','panel-note','回憶拾起後即可重看；完成章節後收藏稱號與旅程紀念。'));
   for(let ch=0;ch<=Math.min(state.chapter,chapters.length-1);ch++){
@@ -59,7 +59,6 @@ openStatus=function(section='status'){
 const challengeBank={
 0:[['社子島位於哪兩條河流交會一帶？',['淡水河與基隆河','新店溪與景美溪','大漢溪與景美溪'],0,'社子島位於淡水河與基隆河交會一帶。'],['哪一組最符合這段童年回憶？',['家庭代工造型筆、辛發亭巧克力醬冰','校園社團、豪小小雞排','會計報表、便利商店咖啡'],0,'童年回憶包含造型筆代工與士林夜市辛發亭的巧克力醬冰。'],['魚魚的法官夢，是從什麼開始萌芽？',['電視上關於法官的新聞、報導與節目','一部固定叫作《正義法官》的影集','大學會計課的報表練習'],0,'是多種法官相關新聞與節目，並不是某部名為《正義法官》的影集。']],
 1:[['臺北市立中正高中位在哪個行政區？',['北投區','士林區','中正區'],0,'校名不等於行政區；臺北市立中正高中位於北投區。'],['哪一個才是中正高中的學校網域？',['ccsh.tp.edu.tw','ck.tp.edu.tw','nccu.edu.tw'],0,'中正高中使用 ccsh.tp.edu.tw；NCCU 是政治大學。'],['依剛才的校園地圖，哪一組建築都出現過？',['至聖樓、格致樓、迎曦樓','四維堂、果夫樓、志希樓','至聖樓、果夫樓、四維堂'],0,'本章校園呈現至聖樓、格致樓與迎曦樓；另一組是政大的場景。']],
-3:[['月初現金 8,000，收回應收款 3,000，支付租金 2,000；月底現金是多少？',['9,000','6,000','11,000'],0,'8,000＋3,000－2,000＝9,000；收回應收款會增加現金。'],['帳上支出 1,800，原始憑證為 1,080，最適當的處理是？',['核對交易與憑證後更正，保留調整依據','直接補一筆收入 720 讓餘額相符','刪除原紀錄，避免留下錯誤'],0,'更正需有依據與紀錄，不能用沒有實際交易的收入補差額。'],['交接未結事項時，哪份紀錄最完整？',['事項、金額、憑證、目前進度與接手人','只列總金額，細節口頭說明','只留下已完成的工作'],0,'完整交接包含未結事項與證據，也要讓接手者知道下一步。']],
 4:[['今天讀得有點累了，想怎麼照顧自己？',['先休息一下，吃點喜歡的東西','把目標縮小，慢慢完成今天的一小步'],0,'休息不是偷懶，慢一點也沒有關係。盡力就好，開心讀書最重要。'],['當進度沒有跟上計畫，想對自己說什麼？',['今天已經很努力了，明天再調整','不用和別人比，我有自己的步調'],0,'備考不是每天都要滿分。願意調整、願意再試一次，就已經是在往前走。'],['睡前，想送給今天的自己哪一句話？',['謝謝妳，今天也沒有放棄自己','先好好睡一覺，明天再一起努力'],0,'這一年半，是許多小小的努力累積起來的。妳不用獨自撐著，學長會陪妳走這段路。']],
 5:[['看到考上的消息，最想先對自己說什麼？',['我做到了，真的做到了！','謝謝那個一直努力的自己'],0,'那些翻過的書、走過的低潮，都有了回音。這一刻，妳可以大方地為自己驕傲。'],['終於可以鬆一口氣，想怎麼慶祝？',['吃一頓喜歡的，和重要的人分享喜悅','好好睡到飽，讓自己安心休息'],0,'怎麼慶祝都好，今天不必急著安排下一個目標。先把這份開心，好好留給自己。'],['面對接下來的新旅程，想帶上哪一句祝福？',['願我記得，自己比想像中更有力量','願我繼續努力，也記得溫柔對待自己'],0,'我就知道妳可以考上！林狗狗銀行的眼光可是很準的。往後的路，不管遇到什麼，我都會陪著妳。']],
 6:[['UNIQLO：定價 1,200 元，打八折後再折 100 元，應付多少？',['860 元','880 元','960 元'],0,'先算 1,200×0.8＝960，再減 100，得到 860。'],['inooknit：客人說鞋長合適，但前掌擠壓，應先怎麼做？',['確認腳寬與壓迫位置，再找合適鞋楦或尺寸','一律加大兩號，不必再試穿','告訴客人所有鞋都會越穿越寬'],0,'尺寸不只看長度，也要考慮腳寬、鞋楦與實際舒適度。'],['BigByte：孩子能跟讀卻無法自行回答，下一步怎麼引導？',['提供圖片與句型提示，再逐步減少協助','直接要求背完整篇文章','持續替他回答以避免挫折'],0,'先提供適量提示，再逐步撤除，幫助孩子建立獨立表達能力。']],
@@ -87,10 +86,6 @@ universityTalk=function(subject){
  challenge(universityQuestions[subject],name,()=>{state.universityPassed=[...passedSubjects(),subject];save();update();if(passedSubjects().size===2)complete();else show(name,'這一科通過了！去找另一位老師繼續挑戰。')});
 };
 const questTalk=talkNPC;talkNPC=function(){if(state.chapter===5&&!finished()){encounter();return}questTalk()};
-const supervisorTalk=talkSupervisor;talkSupervisor=function(){
- if(!finished()&&(state.nttStage||0)===2){show('機車主管','決定好了？先把最後的帳目與交接核對清楚。',[{text:'核對交接，準備辭職',run:()=>challenge(challengeBank[3],'機車主管',()=>show('魚魚','交接完成。這一次，我要為自己做決定。',[{text:'老子不幹了，要去備考了！',run:()=>{state.nttStage=3;save();complete()}}]))}]);return}supervisorTalk();
-};
-
 // These two chapters celebrate care and growth: every choice is valid, with no score.
 function warmConversation(questions,speaker,onComplete,index=0){
  if(index>=questions.length){show(speaker,'把這份溫暖收進回憶，帶著自己的步調繼續前進。',[{text:'收下這份鼓勵',run:onComplete}]);return}
@@ -98,3 +93,58 @@ function warmConversation(questions,speaker,onComplete,index=0){
  show(speaker,question,answers.map(answer=>({text:answer,run:()=>show(speaker,message,[{text:index===questions.length-1?'收下祝福':'繼續聊聊',run:()=>warmConversation(questions,speaker,onComplete,index+1)}])})));
  $('#taskInfo').textContent='暖心對話 '+(index+1)+' / '+questions.length+' · 每個選擇都值得被接住';
 }
+// NTT story: discover CMB → meet → date → rejection → encouragement → resignation.
+const cmbSpot={x:7,y:12};
+try{
+ const saved=JSON.parse(localStorage.getItem('fish-rpg-v3'));
+ if(Number.isInteger(saved?.nttStory)&&saved.nttStory>=0&&saved.nttStory<=5)state.nttStory=saved.nttStory;
+ else state.nttStory=state.done>3?5:state.nttStage===2?4:state.nttStage===1?3:state.metCompanion?2:0;
+}catch{state.nttStory=0}
+function nttStep(){return state.nttStory||0}
+function advanceNTT(stage){state.nttStory=Math.max(nttStep(),stage);save();update()}
+companionVisible=function(){return state.chapter>=3&&state.chapter<chapters.length&&(state.chapter!==3||nttStep()>=1)};
+chapters[3].story='辦公室裡，主管的挑剔讓日常多了些疲憊。下班路上，一個 CMB 的小小入口，將帶來意想不到的相遇。';
+chapters[3].hint='發現 CMB → 與學長交往 → 被主管否定 → 得到鼓勵 → 勇敢辭職';
+const beforeCMBArt=sceneArt;
+sceneArt=function(t){beforeCMBArt(t);if(state.chapter!==3||nttStep()>0)return;const x=cmbSpot.x*T,y=cmbSpot.y*T;rr(x+5,y-8,24,38,'#345b52',4);rect(x+8,y-3,18,26,'#e6dfc2');text('♡',x+17,y+16,'#b76d78',15);text('CMB · 一段新的相遇',x+17,y-24,'#fff0c4',12)};
+const beforeCMBInteract=interact;
+interact=function(){if(!dialog&&state.chapter===3&&nttStep()===0&&near(cmbSpot)){show('☕ CMB','下班路上，打開 CMB 交友軟體。也許，一段新的緣分就從這裡開始。',[
+ {text:'打開 CMB，認識學長',run:()=>{advanceNTT(1);show('♡ 新的相遇','配對成功！學長出現在街角，去和他打聲招呼吧。')}},
+ {text:'晚點再看看',run:close}
+]);return}beforeCMBInteract()};
+$('#talk').onclick=interact;
+const beforeCMBUpdate=update;
+update=function(){beforeCMBUpdate();$('.companion').style.display=state.chapter<3||(state.chapter===3&&nttStep()<2)?'none':'';if(state.chapter===3&&!finished())$('#quest').textContent=[
+ '✦ 任務：在下班路上找到 CMB，開啟一段新的相遇。',
+ '♡ 任務：學長出現了，去和他聊聊。',
+ '♡ 任務：有了學長的陪伴，向主管說說離職備考的想法。',
+ '✦ 任務：被主管否定了，去找學長聊聊心情。',
+ '✦ 任務：收下學長的鼓勵，回去向主管說出辭職的決定。'
+ ][Math.min(4,nttStep())]};
+const beforeCMBHint=draw;
+draw=function(t){beforeCMBHint(t);if(state.chapter===3&&nttStep()===0&&near(cmbSpot))$('#hint').textContent=mobileView.matches?'按「互動」・打開 CMB':'[ E / 空白鍵 ] 打開 CMB'};
+talkSupervisor=function(){
+ if(finished()){show('機車主管','……既然決定了，就把交接做好。');return}
+ if(nttStep()<2){show('機車主管',nttStep()===0?'這點事情還要我提醒？動作快一點，別讓我一直盯著。':'不要以為下班了就能鬆懈，明天的工作還是要準時完成。');return}
+ if(nttStep()===2){show('機車主管','有什麼事？',[
+ {text:'魚魚：我想離職，專心準備考試。',run:()=>{advanceNTT(3);show('機車主管','考試哪有那麼容易？別想太多了，快點找個有錢人嫁掉比較實在。',[{text:'先去找學長聊聊',run:close}])}}
+ ]);return}
+ if(nttStep()===3){show('機車主管','還在想考試？我不是說了，別把事情想得太簡單。');return}
+ show('機車主管','怎麼，又有什麼事？',[
+ {text:'魚魚：老子不幹了，要離職備考！',run:()=>{advanceNTT(5);state.nttStage=3;complete()}}
+ ]);
+};
+const companionBeforeCMB=talkCompanion;
+talkCompanion=function(){
+ if(state.chapter!==3){companionBeforeCMB();return}
+ if(nttStep()===0)return;
+ if(nttStep()===1){show('✦ 守護神・學長','從 CMB 的第一句招呼，到越聊越投緣。和妳一起的日常，讓我想好好期待以後。\n「魚魚，要不要讓我陪妳走接下來的路？」',[
+ {text:'和學長在一起 ♡',run:()=>{advanceNTT(2);meetCompanion();show('♡ 順利交往','原來下班後，也可以有這樣值得期待的人。\n魚魚與學長正式交往，幸福度滿點！')}},
+ {text:'再聊聊，晚點決定',run:close}
+ ]);return}
+ if(nttStep()===3){show('✦ 守護神・學長','想為自己的夢想努力，一點也不可笑。別讓別人的否定，替妳決定未來。\n「不管結果如何，我都會陪著妳。」',[
+ {text:'收下鼓勵，回去說出辭職的決定',run:()=>{advanceNTT(4);close()}}
+ ]);return}
+ show('✦ 守護神・學長',nttStep()===2?'能遇見妳，真好。工作也好、未來的打算也好，都可以慢慢和我說。':nttStep()===4?'不用害怕，妳已經想清楚了。去說出自己的決定，我會在這裡等妳。':'接下來的備考日子，也讓我陪著妳。盡力就好，開心讀書最重要！');
+};
+update();
