@@ -186,15 +186,16 @@ const chapters=[
     "icon": "💛",
     "badge": "未來之光",
     "name": "故事，才正要繼續。",
-    "story": "現在的妳，在司法官學院展開新的學習。從出生時的小女孩，到今天勇敢又耀眼的妳。這趟旅程，請把最重要的三樣東西帶往未來。",
+    "story": "現在的妳，在司法官學院展開新的學習。從出生時的小女孩，到今天勇敢又耀眼的妳。課堂之外，宿舍裡的小插曲、朋友間的夜唱與關心，也成了受訓生活的一部分。去找回這四份新鮮又難忘的回憶吧。",
     "type": "collect",
     "items": [
-      "⚖️ 心中的正義",
-      "🌷 對自己的溫柔",
-      "💛 被愛的底氣"
+      "🩲 內褲事件",
+      "🎤 夜唱",
+      "🤧 生病關懷",
+      "👩‍🏫 彬彬姊"
     ],
-    "hint": "帶上三份禮物，迎接三十歲",
-    "result": "裝備齊全！接下來的世界還有很多風景，而妳永遠可以用自己的步調，繼續寫下故事。"
+    "hint": "收集四份學院生活回憶，迎接三十歲",
+    "result": "四份學院回憶都收好了！有讓人翻白眼的宿舍插曲，也有夜唱的熱鬧、生病時的關心，還有彬彬姊的課堂。新的朋友與日常，讓這一章多了好多故事。"
   }
 ];
 // Version 4 removes the former childhood chapter while preserving later progress.
@@ -218,7 +219,7 @@ try{
 }catch{}
 // Artwork and encounter IDs remain stable when the playable order changes.
 function sceneChapter(){return state.chapter===0?0:state.chapter+1}
-let player={x:5,y:13,px:160,py:416,dir:'down'},keys=new Set(),dialog=false,music=false,audioCtx,last=0,timer=0,walking=0,mode='',npcNames=['媽媽','班導','法律系老師','機車主管','書桌前的自己','報喜信使','打工小鎮嚮導','學院導師','學長'],npc={x:14,y:9},dog={x:8,y:13},gate={x:26,y:10},spots=[{x:9,y:6},{x:20,y:13},{x:22,y:6}];
+let player={x:5,y:13,px:160,py:416,dir:'down'},keys=new Set(),dialog=false,music=false,audioCtx,last=0,timer=0,walking=0,mode='',npcNames=['媽媽','班導','法律系老師','機車主管','書桌前的自己','報喜信使','打工小鎮嚮導','學院導師','學長'],npc={x:14,y:9},dog={x:8,y:13},gate={x:26,y:10},spots=[{x:9,y:6},{x:20,y:13},{x:22,y:6},{x:11,y:15}];
 const canvas=$('#world'),ctx=canvas.getContext('2d'),T=32,W=30,H=20;
 function save(){try{localStorage.setItem('fish-rpg-v3',JSON.stringify({...state,version:4}))}catch{}}
 function tone(f=660){if(!music)return;try{audioCtx??=new(window.AudioContext||window.webkitAudioContext)();audioCtx.resume();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=f;g.gain.setValueAtTime(.04,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.2);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.2)}catch{}}
@@ -228,7 +229,7 @@ function update(){let c=current();$('#chapters').innerHTML=chapters.slice(0,stat
 function show(speaker,text,buttons=[]){dialog=true;keys.clear();$('.dialogue').hidden=false;$('#speaker').textContent=speaker;$('#story').className='';$('#story').textContent=text;$('#activity').innerHTML='';buttons.forEach(b=>{let e=document.createElement('button');e.className='choice';e.textContent=b.text;e.onclick=b.run;$('#activity').append(e)});$('#activity').className=buttons.length?'choices':'';$('#taskInfo').textContent='E / 空白鍵 繼續 · Esc 關閉';$('#next').textContent='返回地圖　↵';$('#next').disabled=false;$('#next').onclick=close}
 function close(){dialog=false;keys.clear();$('.dialogue').hidden=true;$('.world').focus({preventScroll:true})}
 function complete(){state.done=Math.max(state.done,state.chapter+1);save();update();tone(880);show(npcNames[state.chapter],current().result);toast('獲得徽章：'+current().badge)}
-function interact(){if(dialog){close();return}if(state.chapter===0&&near(streetNPC)){show('街頭混混','看什麼看，有種長大當法官抓我呀！');return}if(state.chapter===2&&near(accountingNPC)){universityTalk('accounting');return}tone(550);if(state.chapter<chapters.length&&near(gate)){if(state.chapter===chapters.length){toast('先去找學長，打開生日驚喜吧。');return}if(!finished()){show('✦ 時光之門','還有值得收藏的回憶。先完成本章任務，再繼續前進吧。');return}state.chapter++;state.collected=[];player={x:5,y:13,px:160,py:416,dir:'down'};save();update();toast(state.chapter===chapters.length?'歡迎來到三十歲的生日花園！':'抵達：'+current().place);return}if(state.chapter===0){const member=family.find(near);if(member){if(member.name==='媽媽')talkNPC();else show(member.name,member.story);return}}if(companionVisible()&&near(dog)){talkCompanion();return}if(near(npc)){talkNPC();return}let c=current();if(state.chapter<chapters.length&&c.type==='collect'){for(let i=0;i<c.items.length;i++){if(near(spots[i])&&!collected().has(i)){state.collected.push(i);save();update();show('✦ 拾起回憶',c.items[i]+' 已放進背包。'+(collected().size===c.items.length?'收集齊了！回去找廣場中央的角色吧。':'還有其他回憶散落在地圖中。'));if(state.chapter===0&&i===1){$('#story').textContent='📺 小時候看電視上關於法官的新聞、報導與節目，讓魚魚萌生了當法官的夢想。這份憧憬，已收進童年回憶。'}if(state.chapter===0&&i===2)offerIceMemory();tone(900);return}}}toast('靠近角色、閃光寶物或金色門，再按 E。')}
+function interact(){if(dialog){close();return}if(state.chapter===0&&near(streetNPC)){show('街頭混混','看什麼看，有種長大當法官抓我呀！');return}if(state.chapter===2&&near(accountingNPC)){universityTalk('accounting');return}tone(550);if(state.chapter<chapters.length&&near(gate)){if(state.chapter===chapters.length){toast('先去找學長，打開生日驚喜吧。');return}if(!finished()){show('✦ 時光之門','還有值得收藏的回憶。先完成本章任務，再繼續前進吧。');return}state.chapter++;state.collected=[];player={x:5,y:13,px:160,py:416,dir:'down'};save();update();toast(state.chapter===chapters.length?'歡迎來到三十歲的生日花園！':'抵達：'+current().place);return}if(state.chapter===0){const member=family.find(near);if(member){if(member.name==='媽媽')talkNPC();else show(member.name,member.story);return}}if(companionVisible()&&near(dog)){talkCompanion();return}if(near(npc)){talkNPC();return}let c=current();if(state.chapter<chapters.length&&c.type==='collect'){for(let i=0;i<c.items.length;i++){if(near(spots[i])&&!collected().has(i)){state.collected.push(i);save();update();show('✦ 拾起回憶',c.items[i]+' 已放進背包。'+(collected().size===c.items.length?'收集齊了！回去找廣場中央的角色吧。':'還有其他回憶散落在地圖中。'));if(current().memoryDetails?.[i])$('#story').textContent=c.items[i]+'\n\n'+c.memoryDetails[i]+'\n\n✦ 已收藏，可從狀態選單的回憶收藏冊重看。';if(state.chapter===0&&i===1){$('#story').textContent='📺 小時候看電視上關於法官的新聞、報導與節目，讓魚魚萌生了當法官的夢想。這份憧憬，已收進童年回憶。'}if(state.chapter===0&&i===2)offerIceMemory();tone(900);return}}}toast('靠近角色、閃光寶物或金色門，再按 E。')}
 function talkNPC(){if(state.chapter===chapters.length){finale();return}let c=current();if(finished()){show(npcNames[state.chapter],c.result+'\n右側的時光之門，正在等妳。');return}if(c.type==='collect'){if(collected().size>=c.items.length){complete();return}show(npcNames[state.chapter],c.story+(state.chapter===0?'':'\n請在地圖中找到 '+c.items.length+' 個閃光回憶，帶回來給我。'));return}show(npcNames[state.chapter],c.story,c.items.map((text,i)=>({text,run:()=>{if(c.type==='quiz'&&i!==0){show(npcNames[state.chapter],'我們再一起核對看看：收入 100 − 支出 60。別急，再試一次。',[{text:'重新核對',run:talkNPC}]);return}complete()}})))}
 function finale(){meetCompanion();const buttons=[{text:'🎂 許願，吹熄蠟燭',run:()=>{show('♡ 生日快樂','願妳平安、快樂，也永遠知道自己被愛著。\n三十歲只是下一場美好冒險的開始。');celebrateBirthday();tone(1046)}}];if(state.wishCompleted)buttons.push({text:'其他',run:companionExtras});show('✦ 守護神・學長','親愛的魚魚：\n從中正高中，到政大法律與會計雙主修；從 NTT 的會計工作，到辭職後在家備考一年半，再到考上司法官、打工與入院受訓，每一個版本的妳都值得被愛。\n我為妳的努力感到驕傲。但就算今天什麼任務都沒完成，妳也一樣是我最喜歡的寶貝。\n三十歲，願妳繼續做喜歡的事、走想走的路。接下來的冒險，讓學長陪妳一起。',buttons);$('#story').style.whiteSpace='pre-line'}
 // Visual building envelopes include roof overhangs in every chapter.
@@ -465,14 +466,14 @@ draw=function(t){
 const streetNPC={x:5,y:15},accountingNPC={x:21,y:10};
 function companionVisible(){return state.chapter>=3&&state.chapter<chapters.length}
 function memoryLabel(i){
- const labels={0:['迪士尼樂園造型筆','電視裡的法官夢','辛發亭吃冰回憶'],1:['牙套與咖哩拒絕往來','全校知名學霸','腦內法庭小劇場'],2:['跨系高分傳說','閨蜜李懿'],6:['UNIQLO','inooknit','BigByte']};
+ const labels={0:['迪士尼樂園造型筆','電視裡的法官夢','辛發亭吃冰回憶'],1:['牙套與咖哩拒絕往來','全校知名學霸','腦內法庭小劇場'],2:['跨系高分傳說','閨蜜李懿'],6:['UNIQLO','inooknit','BigByte'],7:['內褲事件','夜唱','生病關懷','彬彬姊']};
  return labels[state.chapter]?.[i]||'✦ 回憶';
 }
 function drawMemory(i,t){
  const o=spots[i],x=o.x*T,y=o.y*T,bob=Math.sin(t/400+i)*2;
  ctx.fillStyle='#edd69b66';ctx.beginPath();ctx.ellipse(x+16,y+28,20,7,0,0,Math.PI*2);ctx.fill();
  rect(x+2,y+3+bob,29,24,'#efe3bd');rect(x+2,y+26+bob,29,3,'#b9a879');
- const icons={0:['✏️','📺','🍧'],1:['🦷','🏆','⚖️'],2:['🧮','👭'],6:['👕','👟','📚']};
+ const icons={0:['✏️','📺','🍧'],1:['🦷','🏆','⚖️'],2:['🧮','👭'],6:['👕','👟','📚'],7:['🩲','🎤','🤧','👩‍🏫']};
  text(icons[state.chapter]?.[i]||'✨',x+16,y+23+bob,'#fff5da',22);
  text(memoryLabel(i),x+16,y-12,'#fff0c2',12);
 }
@@ -689,4 +690,4 @@ function audioSettings(){show('♫ 音樂與音效','各章有不同的原創旋
 $('#sound').textContent='♫ 音樂設定';$('#sound').onclick=audioSettings;
 const statusWithAudio=openStatus;openStatus=function(section='status'){statusWithAudio(section);if(section==='status'){const button=document.createElement('button');button.className='choice';button.textContent='♫ 音樂與音效';button.onclick=audioSettings;$('#activity').append(button)}};
 const finishWithSound=complete;complete=function(){finishWithSound();playEffect('happy')};
-</script><script src="collection.js?v=1"></script></body></html>
+</script><script src="collection.js?v=2"></script></body></html>

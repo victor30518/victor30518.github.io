@@ -1,3 +1,15 @@
+// Titles stay concise on the map; the same full memory is shown on pickup and in the album.
+chapters[6].memoryDetails=[
+ '在 UNIQLO 的日子，魚魚練成了折衣服高手：攤平、對齊、摺好，一件件衣服整整齊齊地歸位。比起摺出漂亮的衣服，更開心的是替顧客提供建議後，收到一句真心的「謝謝」。原來幫上別人的忙，會讓一天的疲累都輕一點。',
+ '在 inooknit 賣鞋的回憶，除了陪顧客挑到合腳的鞋，也少不了好吃的補給。員工餐的鐵板燒、中午的繼光香香雞，還有 31 冰淇淋，都是工作日裡值得期待的小確幸。認真上班，也要認真吃飯、好好犒賞自己。',
+ '在 BigByte 當小老師，每天都像帶著一群精力用不完的小蘿蔔闖關。不聽話、愛分心的時候，還是得拿出老師的氣勢：「先坐好，聽我說！」該提醒就提醒、該立規矩就立規矩，教英文之外，也練出了讓小蘿蔔們收心的本事。'
+];
+chapters[7].memoryDetails=[
+ '「怎麼有人把內褲掛在我的曬衣架上？也太噁心了吧！」原本只是要曬衣服，卻碰上讓人滿頭問號的宿舍插曲。共用生活空間，也要尊重別人的物品與界線啊！這一幕，實在讓人很難忘記。',
+ '和一群朋友一起夜唱，恍惚間像又回到大學時代。輪流點歌、一起合唱，原來到了這個階段，還能遇見這樣新鮮又熱鬧的夜晚。果然，社交也有它的快樂；不必勉強自己每場都到，但也不用把所有邀約都推開。',
+ '感冒的時候，才發現身邊有這麼多人惦記著自己。一句「還好嗎？」、一句「多休息」，都讓不舒服的日子暖了一點。原來在新的環境裡，也已經有人把魚魚放在心上。被大家關心著，真的好感動。',
+ '怪阿姨老師彬彬姊，是學院生活裡很有存在感的一號人物。至於上課的生存守則？魚魚默默記下一句：「別讓彬彬姊不開心。」光是提起這個名字，就很有畫面；這份獨特的課堂回憶，也一起收進收藏冊。'
+];
 // Completed chapters reconstruct collections from old saves; partial collections stay current.
 function memoryEntries(ch){const c=chapters[ch];return c.type==='collect'?c.items:[c.result]}
 function memoryUnlocked(ch,i){return ch<state.done||(ch===state.chapter&&chapters[ch].type==='collect'&&collected().has(i))}
@@ -9,7 +21,7 @@ function returnToCollection(){openStatus('collection')}
 function readMemory(ch,i){
  if(!memoryUnlocked(ch,i))return;
  if(ch===0&&i===2){showIceMemory();$('#next').textContent='返回收藏冊';$('#next').onclick=returnToCollection;return}
- show(chapters[ch].icon+' '+chapters[ch].title,memoryEntries(ch)[i],[{text:'返回收藏冊',run:returnToCollection}]);
+ show(chapters[ch].icon+' '+chapters[ch].title,memoryEntries(ch)[i]+(chapters[ch].memoryDetails?.[i]?'\n\n'+chapters[ch].memoryDetails[i]:''),[{text:'返回收藏冊',run:returnToCollection}]);
  $('#taskInfo').textContent='已收藏 · 可隨時重看';
 }
 openStatus=function(section='status'){
