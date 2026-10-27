@@ -138,8 +138,8 @@ const companionBeforeCMB=talkCompanion;
 talkCompanion=function(){
  if(state.chapter!==3){companionBeforeCMB();return}
  if(nttStep()===0)return;
- if(nttStep()===1){show('✦ 守護神・學長','從 CMB 的第一句招呼，到越聊越投緣。和妳一起的日常，讓我想好好期待以後。\n「魚魚，要不要讓我陪妳走接下來的路？」',[
- {text:'和學長在一起 ♡',run:()=>{advanceNTT(2);meetCompanion();show('♡ 順利交往','原來下班後，也可以有這樣值得期待的人。\n魚魚與學長正式交往，幸福度滿點！')}},
+ if(nttStep()===1){show('♡ 魚魚的心意','從 CMB 的第一句招呼，到越聊越投緣，魚魚發現自己越來越期待和學長聊天。\n這一次，要不要鼓起勇氣，主動跟學長告白？',[
+ {text:'跟學長告白：我喜歡你 ♡',run:()=>{advanceNTT(2);meetCompanion();show('♡ 告白成功','魚魚鼓起勇氣：「學長，我喜歡你。」\n學長笑著回應：「我也喜歡妳。接下來的日子，讓我們一起走吧。」\n魚魚與學長正式交往，幸福度滿點！')}},
  {text:'再聊聊，晚點決定',run:close}
  ]);return}
  if(nttStep()===3){show('✦ 守護神・學長','想為自己的夢想努力，一點也不可笑。別讓別人的否定，替妳決定未來。\n「不管結果如何，我都會陪著妳。」',[
@@ -148,3 +148,30 @@ talkCompanion=function(){
  show('✦ 守護神・學長',nttStep()===2?'能遇見妳，真好。工作也好、未來的打算也好，都可以慢慢和我說。':nttStep()===4?'不用害怕，妳已經想清楚了。去說出自己的決定，我會在這裡等妳。':'接下來的備考日子，也讓我陪著妳。盡力就好，開心讀書最重要！');
 };
 update();
+
+// Birthday conversations are personal preferences expressed as mutual care.
+const companionTopics={
+ likes:{title:'學長喜歡什麼？',intro:'讓我覺得安心的，是我們相處時那些小小的溫柔。妳想先聽哪一個？',items:[
+  ['溫柔','我很珍惜好好說話的感覺。家裡如果有人脾氣一上來就大聲說話，我會不太舒服，也容易緊繃。我希望我們都能把家留成安心的地方。\n有情緒可以說；如果一時說不下去，就先緩一緩，等彼此準備好了再聊。我也會提醒自己，放輕聲音，好好聽妳說。'],
+  ['願意溝通改進','我喜歡的是，遇到問題時，我們還願意靠近彼此，把話說清楚。妳可以告訴我哪裡讓妳難受，我也會坦白說出自己的感受。\n不用一次就做得完美，但希望我們都願意聽、願意調整，把說好的小改變慢慢做到。兩個人一起努力，我會覺得這段關係很踏實。'],
+  ['聽話乖乖守信用','我說的「乖乖」，是希望我們把彼此的話放在心上，認真對待一起說好的事情。妳有不同想法，當然可以告訴我，我也要好好聽。\n答應的事盡量做到；真的做不到，就早一點說，我們再一起調整。妳能放心相信我，我也能放心相信妳，這種安心對我很重要。']
+ ]},
+ values:{title:'學長注重什麼？',intro:'有幾件事，我想和妳一起好好照顧。這些期待，也同樣適用在我身上。',items:[
+  ['注重隱私','我對自己的隱私比較在意，尤其在第三人或不熟的人面前，不太自在被提起私事。我們之間親密的故事，我也希望先留給我們自己。\n如果想和別人分享，可以先問問對方願不願意；拿不準時，就先不說。我也會一樣尊重妳，讓我們都能安心地把心事交給彼此。'],
+  ['量力而為','我知道妳想做很多事，也期待把每一天過得精彩。但排行程時，記得把自己的體力和休息也排進去，好嗎？\n累了就少跑一站，不舒服就換一天。看到妳硬撐到生病、累倒，我真的會擔心。我更想要的是妳舒服、開心，我們有精神再一起慢慢玩。'],
+  ['外挺內誠','我希望我們在外面，特別是在不熟的人面前，都能替彼此留一份尊重。有不同意見，可以先平和地說；容易讓人難堪的批評或兩人的矛盾，留到私下再好好談。\n私下妳可以坦白告訴我哪裡做得不好，我會認真聽，也願意改。維護彼此的尊嚴，和誠實面對問題，可以一起做到；我也會這樣對妳。']
+ ]}
+};
+companionExtras=function(category){
+ if(!state.wishCompleted)return;
+ const topic=companionTopics[category];
+ if(!topic){show('✦ 守護神・學長','還想多了解學長一點嗎？慢慢聊，我也想聽聽妳的想法。',[
+  {text:'學長喜歡什麼？',run:()=>companionExtras('likes')},
+  {text:'學長注重什麼？',run:()=>companionExtras('values')},
+  {text:'回到生日祝福',run:finale}
+ ]);return}
+ show(topic.title,topic.intro,[...topic.items.map(([title,body])=>({text:title,run:()=>show('✦ 學長 · '+title,body,[
+  {text:'返回'+topic.title.replace('？',''),run:()=>companionExtras(category)},
+  {text:'其他話題',run:()=>companionExtras()}
+ ])})),{text:'返回其他話題',run:()=>companionExtras()}]);
+};
