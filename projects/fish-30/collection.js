@@ -225,14 +225,14 @@ companionExtras=function(category){
 
 // Optional finale treasure hunt. IDs are saved separately from chapter memories.
 const birthdayGifts=[
- {id:'teddy',name:'泰迪熊玩偶',icon:'🧸',x:4,y:15,clue:'西邊的小屋往南走，樹影裡好像藏著一位毛茸茸的朋友。',story:'找到泰迪熊玩偶！把柔軟的擁抱帶回家，累了的時候，就讓它陪妳休息。'},
- {id:'dachshund',name:'臘腸狗抱枕',icon:'🐕',x:21,y:16,clue:'往花園東南邊找找，樹叢旁有個長長的小傢伙。',story:'找到臘腸狗抱枕！長長的身體、短短的腿，是陪妳窩著放鬆的好夥伴。'},
- {id:'box',name:'禮物盒',icon:'🎁',x:27,y:6,clue:'沿著花園東邊往北探索，別漏掉靠近邊緣的樹蔭。',story:'找到禮物盒！把這份藏在角落的心意收好，願往後的日子也有值得期待的小驚喜。'},
+ {id:'teddy',name:'泰迪熊玩偶',icon:'🧸',x:5,y:17,clue:'西邊的小屋往南走，樹影裡好像藏著一位毛茸茸的朋友。',story:'找到泰迪熊玩偶！把柔軟的擁抱帶回家，累了的時候，就讓它陪妳休息。'},
+ {id:'dachshund',name:'臘腸狗抱枕',icon:'🐕',x:20,y:17,clue:'往花園東南邊找找，樹叢旁有個長長的小傢伙。',story:'找到臘腸狗抱枕！長長的身體、短短的腿，是陪妳窩著放鬆的好夥伴。'},
+ {id:'box',name:'禮物盒',icon:'🎁',x:27,y:5,clue:'沿著花園東邊往北探索，別漏掉靠近邊緣的樹蔭。',story:'找到禮物盒！把這份藏在角落的心意收好，願往後的日子也有值得期待的小驚喜。'},
  {id:'cake',name:'生日蛋糕',icon:'🎂',x:23,y:12,clue:'未來的小屋旁，屋簷外好像留著一份甜甜的驚喜。',story:'找到生日蛋糕！三十歲生日快樂，願妳每一年都能做喜歡的事，也被好好愛著。'}
 ];
 try{const saved=JSON.parse(localStorage.getItem('fish-rpg-v3'));state.birthdayGifts=Array.isArray(saved?.birthdayGifts)?[...new Set(saved.birthdayGifts.filter(id=>birthdayGifts.some(g=>g.id===id)))]:[]}catch{state.birthdayGifts=[]}
 function foundBirthdayGifts(){return new Set(state.birthdayGifts||[])}
-function nearbyBirthdayGift(){return state.chapter===chapters.length?birthdayGifts.find(g=>!foundBirthdayGifts().has(g.id)&&near(g)):null}
+function nearbyBirthdayGift(){const spot=facingSearchSpot();return spot?birthdayGifts.find(g=>g.x===spot.x&&g.y===spot.y&&!foundBirthdayGifts().has(g.id)):null}
 function paintBirthdayGift(g,highlight=false){
  const x=g.x*T+8,y=g.y*T+12;
  if(highlight){ctx.fillStyle='#f7dda755';ctx.beginPath();ctx.ellipse(x+9,y+13,17,7,0,0,Math.PI*2);ctx.fill()}
@@ -247,14 +247,14 @@ function paintBirthdayGift(g,highlight=false){
  }
 }
 const sceneBeforeGifts=sceneArt;
-sceneArt=function(t){sceneBeforeGifts(t);if(state.chapter===chapters.length)birthdayGifts.forEach(g=>{if(!foundBirthdayGifts().has(g.id))paintBirthdayGift(g)})};
+sceneArt=function(t){sceneBeforeGifts(t);if(state.chapter===chapters.length)drawSearchGarden()};
 const drawBeforeGifts=draw;
-draw=function(t){drawBeforeGifts(t);const gift=nearbyBirthdayGift();if(gift){paintBirthdayGift(gift,true);text('✦ 發現 '+gift.name,gift.x*T+16,gift.y*T-8,'#ffe6a6',12);renderMapLabels();$('#hint').textContent=mobileView.matches?'按「互動」・收下'+gift.name:'[ E / 空白鍵 ] 收下'+gift.name}};
+draw=function(t){drawBeforeGifts(t);if(facingSearchSpot())$('#hint').textContent=mobileView.matches?'按「互動」・仔細查看這個角落':'[ E / 空白鍵 ] 仔細查看這個角落'};
 const interactBeforeGifts=interact;
-interact=function(){const gift=!dialog&&nearbyBirthdayGift();if(!gift){interactBeforeGifts();return}state.birthdayGifts=[...foundBirthdayGifts(),gift.id];save();update();playEffect('happy');show(gift.icon+' '+gift.name,gift.story+'\n\n'+(foundBirthdayGifts().size===birthdayGifts.length?'四份生日禮物都找到了！這些心意，都可以從收藏冊隨時重看。':`已找到 ${foundBirthdayGifts().size} / ${birthdayGifts.length} 份禮物，其餘驚喜還藏在花園裡。`),[{text:'繼續探索',run:close},{text:'查看禮物收藏',run:()=>openStatus('collection')}])};
+interact=function(){const gift=!dialog&&nearbyBirthdayGift();if(!gift){if(!dialog&&facingSearchSpot()){show('✦ 查看角落','仔細翻看了一下，這裡只有花園的日常物品。換個方向，再找找其他角落吧。');return}interactBeforeGifts();return}state.birthdayGifts=[...foundBirthdayGifts(),gift.id];save();update();playEffect('happy');show(gift.icon+' '+gift.name,gift.story+'\n\n'+(foundBirthdayGifts().size===birthdayGifts.length?'四份生日禮物都找到了！這些心意，都可以從收藏冊隨時重看。':`已找到 ${foundBirthdayGifts().size} / ${birthdayGifts.length} 份禮物，其餘驚喜還藏在花園裡。`),[{text:'繼續探索',run:close},{text:'查看禮物收藏',run:()=>openStatus('collection')}])};
 $('#talk').onclick=interact;
 const updateBeforeGifts=update;
-update=function(){updateBeforeGifts();if(state.chapter===chapters.length)$('#quest').textContent=`♡ 到廣場中央與學長對話，許下生日願望。\n🎁 自由尋寶：已找到 ${foundBirthdayGifts().size} / ${birthdayGifts.length} 份生日禮物。禮物藏在樹影與屋旁，靠近後按「互動」收下；不影響許願。`};
+update=function(){updateBeforeGifts();if(state.chapter===chapters.length)$('#quest').textContent=`♡ 到廣場中央與學長對話，許下生日願望。\n🎁 自由尋寶：已找到 ${foundBirthdayGifts().size} / ${birthdayGifts.length} 份生日禮物。禮物藏在花園物件裡。繞過綠籬、走到旁邊，面向物件按「互動」仔細查看；有些地方沒有禮物。尋寶不影響許願。`};
 function giftClue(){const next=birthdayGifts.find(g=>!foundBirthdayGifts().has(g.id));show('✦ 花園尋寶線索',next?next.clue:'四份禮物都收好了，生日快樂！',[{text:'回到任務',run:()=>openStatus('quest')}])}
 const statusBeforeGifts=openStatus;
 openStatus=function(section='status'){
@@ -266,3 +266,46 @@ openStatus=function(section='status'){
  }
 };
 update();
+
+
+// All hiding places look like ordinary props, including empty places. Search only the facing tile.
+const searchSpots=[
+ {x:5,y:17,kind:'basket'},{x:20,y:17,kind:'bench'},{x:27,y:5,kind:'crate'},{x:23,y:12,kind:'table'},
+ {x:2,y:10,kind:'basket'},{x:9,y:10,kind:'crate'},{x:11,y:14,kind:'table'},
+ {x:2,y:18,kind:'bench'},{x:8,y:17,kind:'basket'},{x:16,y:13,kind:'crate'},
+ {x:24,y:9,kind:'table'},{x:26,y:17,kind:'bench'},{x:22,y:4,kind:'crate'},
+ {x:10,y:5,kind:'basket'},{x:18,y:10,kind:'bench'},{x:28,y:11,kind:'table'}
+];
+const birthdayHedges=[
+ [4,17],[6,17],[5,16],[4,16],[6,16],
+ [19,17],[20,16],[19,16],
+ [27,4],[28,4],[28,5],[27,6],[28,6],
+ [23,11],[24,11],[24,12]
+];
+function facingSearchSpot(){
+ if(state.chapter!==chapters.length)return null;
+ const [dx,dy]={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[player.dir]||[0,1];
+ return searchSpots.find(s=>s.x===player.x+dx&&s.y===player.y+dy);
+}
+const blockedBeforeSearch=blocked;
+blocked=function(x,y){return blockedBeforeSearch(x,y)||(state.chapter===chapters.length&&(searchSpots.some(s=>s.x===x&&s.y===y)||birthdayHedges.some(([hx,hy])=>hx===x&&hy===y)))};
+function paintGardenProp(s){
+ const x=s.x*T,y=s.y*T;
+ rect(x+3,y+27,29,6,'#24453940');
+ if(s.kind==='basket'){
+  rect(x+5,y+11,23,19,'#a38e68');rect(x+3,y+9,27,5,'#c4ad81');
+  for(let k=0;k<4;k++)rect(x+7+k*5,y+15,2,12,'#796c52');
+  rect(x+8,y+6,8,6,'#a6b7a0');rect(x+17,y+4,9,8,'#c0bca0');
+ }else if(s.kind==='crate'){
+  rect(x+3,y+4,27,26,'#8e8169');rect(x+2,y+3,29,5,'#b5a383');
+  rect(x+7,y+9,4,19,'#b5a383');rect(x+23,y+9,4,19,'#b5a383');rect(x+4,y+18,26,3,'#685f50');
+ }else if(s.kind==='bench'){
+  rect(x,y+3,32,12,'#8d8a71');rect(x,y+18,32,6,'#aaa184');rect(x+3,y+22,4,10,'#625e4f');rect(x+25,y+22,4,10,'#625e4f');rect(x+9,y+14,17,6,'#9fa698');
+ }else{
+  rect(x+3,y+17,4,15,'#736951');rect(x+25,y+17,4,15,'#736951');rect(x,y+8,32,14,'#c5c1a5');rect(x+4,y+5,12,3,'#e0d5b7');rect(x+21,y,6,8,'#849d8a');
+ }
+}
+function drawSearchGarden(){
+ for(const [hx,hy] of birthdayHedges){const paint=()=>{const x=hx*T,y=hy*T;rect(x+1,y+8,30,24,'#335d4d');rect(x,y+3,32,19,'#55745b');rect(x+4,y,24,9,'#6f8967');rect(x+6,y+12,5,3,'#879877')};if(depthQueue)depthQueue.push({y:hy*T+33,paint});else paint()}
+ for(const spot of searchSpots){if(depthQueue)depthQueue.push({y:spot.y*T+33,paint:()=>paintGardenProp(spot)});else paintGardenProp(spot)}
+}
