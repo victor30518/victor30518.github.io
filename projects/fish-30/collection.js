@@ -222,3 +222,47 @@ companionExtras=function(category){
   {text:'其他話題',run:()=>companionExtras()}
  ])})),{text:'返回其他話題',run:()=>companionExtras()}]);
 };
+
+// Optional finale treasure hunt. IDs are saved separately from chapter memories.
+const birthdayGifts=[
+ {id:'teddy',name:'泰迪熊玩偶',icon:'🧸',x:4,y:15,clue:'西邊的小屋往南走，樹影裡好像藏著一位毛茸茸的朋友。',story:'找到泰迪熊玩偶！把柔軟的擁抱帶回家，累了的時候，就讓它陪妳休息。'},
+ {id:'dachshund',name:'臘腸狗抱枕',icon:'🐕',x:21,y:16,clue:'往花園東南邊找找，樹叢旁有個長長的小傢伙。',story:'找到臘腸狗抱枕！長長的身體、短短的腿，是陪妳窩著放鬆的好夥伴。'},
+ {id:'box',name:'禮物盒',icon:'🎁',x:27,y:6,clue:'沿著花園東邊往北探索，別漏掉靠近邊緣的樹蔭。',story:'找到禮物盒！把這份藏在角落的心意收好，願往後的日子也有值得期待的小驚喜。'},
+ {id:'cake',name:'生日蛋糕',icon:'🎂',x:23,y:12,clue:'未來的小屋旁，屋簷外好像留著一份甜甜的驚喜。',story:'找到生日蛋糕！三十歲生日快樂，願妳每一年都能做喜歡的事，也被好好愛著。'}
+];
+try{const saved=JSON.parse(localStorage.getItem('fish-rpg-v3'));state.birthdayGifts=Array.isArray(saved?.birthdayGifts)?[...new Set(saved.birthdayGifts.filter(id=>birthdayGifts.some(g=>g.id===id)))]:[]}catch{state.birthdayGifts=[]}
+function foundBirthdayGifts(){return new Set(state.birthdayGifts||[])}
+function nearbyBirthdayGift(){return state.chapter===chapters.length?birthdayGifts.find(g=>!foundBirthdayGifts().has(g.id)&&near(g)):null}
+function paintBirthdayGift(g,highlight=false){
+ const x=g.x*T+8,y=g.y*T+12;
+ if(highlight){ctx.fillStyle='#f7dda755';ctx.beginPath();ctx.ellipse(x+9,y+13,17,7,0,0,Math.PI*2);ctx.fill()}
+ if(g.id==='teddy'){
+  rect(x+3,y+5,13,14,'#ac805b');rect(x+2,y,15,11,'#c79d72');rect(x,y-2,5,6,'#ac805b');rect(x+14,y-2,5,6,'#ac805b');rect(x+5,y+4,2,2,'#403f35');rect(x+12,y+4,2,2,'#403f35');rect(x+7,y+7,5,3,'#e0c09a');rect(x,y+16,7,5,'#b48a65');rect(x+12,y+16,7,5,'#b48a65');
+ }else if(g.id==='dachshund'){
+  rect(x-4,y+7,25,9,'#b19068');rect(x+18,y+1,9,12,'#c7a87b');rect(x+18,y+2,4,10,'#846349');rect(x+25,y+5,2,2,'#403c33');rect(x,y+15,4,4,'#977452');rect(x+15,y+15,4,4,'#977452');
+ }else if(g.id==='box'){
+  rect(x,y+2,19,17,'#a87776');rect(x-1,y,21,5,'#bd9490');rect(x+8,y,4,19,'#d9c393');rect(x+3,y-4,6,4,'#d9c393');rect(x+12,y-4,6,4,'#d9c393');
+ }else{
+  rect(x-2,y+17,25,3,'#c8c5ad');rect(x,y+6,21,11,'#d9c4a5');rect(x,y+6,21,4,'#f2e1bd');rect(x+4,y+12,13,2,'#b8827d');rect(x+9,y,2,6,'#a38076');rect(x+9,y-3,2,3,'#e1bf7d');
+ }
+}
+const sceneBeforeGifts=sceneArt;
+sceneArt=function(t){sceneBeforeGifts(t);if(state.chapter===chapters.length)birthdayGifts.forEach(g=>{if(!foundBirthdayGifts().has(g.id))paintBirthdayGift(g)})};
+const drawBeforeGifts=draw;
+draw=function(t){drawBeforeGifts(t);const gift=nearbyBirthdayGift();if(gift){paintBirthdayGift(gift,true);text('✦ 發現 '+gift.name,gift.x*T+16,gift.y*T-8,'#ffe6a6',12);renderMapLabels();$('#hint').textContent=mobileView.matches?'按「互動」・收下'+gift.name:'[ E / 空白鍵 ] 收下'+gift.name}};
+const interactBeforeGifts=interact;
+interact=function(){const gift=!dialog&&nearbyBirthdayGift();if(!gift){interactBeforeGifts();return}state.birthdayGifts=[...foundBirthdayGifts(),gift.id];save();update();playEffect('happy');show(gift.icon+' '+gift.name,gift.story+'\n\n'+(foundBirthdayGifts().size===birthdayGifts.length?'四份生日禮物都找到了！這些心意，都可以從收藏冊隨時重看。':`已找到 ${foundBirthdayGifts().size} / ${birthdayGifts.length} 份禮物，其餘驚喜還藏在花園裡。`),[{text:'繼續探索',run:close},{text:'查看禮物收藏',run:()=>openStatus('collection')}])};
+$('#talk').onclick=interact;
+const updateBeforeGifts=update;
+update=function(){updateBeforeGifts();if(state.chapter===chapters.length)$('#quest').textContent=`♡ 到廣場中央與學長對話，許下生日願望。\n🎁 自由尋寶：已找到 ${foundBirthdayGifts().size} / ${birthdayGifts.length} 份生日禮物。禮物藏在樹影與屋旁，靠近後按「互動」收下；不影響許願。`};
+function giftClue(){const next=birthdayGifts.find(g=>!foundBirthdayGifts().has(g.id));show('✦ 花園尋寶線索',next?next.clue:'四份禮物都收好了，生日快樂！',[{text:'回到任務',run:()=>openStatus('quest')}])}
+const statusBeforeGifts=openStatus;
+openStatus=function(section='status'){
+ statusBeforeGifts(section);if(state.chapter!==chapters.length)return;
+ if(section==='quest')$('#activity').append(panelButton('需要一點尋寶線索',giftClue));
+ if(['collection','journal','badges'].includes(section)){
+  const album=panelElement('section','album-chapter');album.append(panelElement('h3','','🎁 生日花園的驚喜'),panelElement('small','',`已找到 ${foundBirthdayGifts().size} / ${birthdayGifts.length} 份禮物`));
+  const grid=panelElement('div','memory-grid');for(const g of birthdayGifts){const found=foundBirthdayGifts().has(g.id),button=panelButton(found?g.icon+' '+g.name:'✧ 尚未找到的生日禮物',()=>show(g.icon+' '+g.name,g.story,[{text:'返回收藏冊',run:returnToCollection}]),'memory-card');button.disabled=!found;grid.append(button)}album.append(grid);$('#activity').append(album);
+ }
+};
+update();
